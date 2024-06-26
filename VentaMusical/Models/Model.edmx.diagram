@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d7bd56be9b7246c8a60576ea48b9ff13" Name="Diagram1">
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Canciones" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Generos" Width="1.5" PointX="3.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_GenerosMusicales" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Impuestos" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Modulos" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Perfiles" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_PermisosPorModulo" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_TipoTarjetas" Width="1.5" PointX="3.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Usuarios" Width="1.5" PointX="6" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaEncabezado" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaLinea" Width="1.5" PointX="10.5" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdGen__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Permis__IdMod__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Permis__IdMod__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdPer__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdPer__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaE__Numer__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Porce__3D5E1FD2" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

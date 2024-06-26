@@ -1,0 +1,692 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VentaMusicalDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_Canciones">
+          <Key>
+            <PropertyRef Name="CodigoCancion" />
+          </Key>
+          <Property Name="CodigoCancion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoGenero" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="Imagen" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Generos">
+          <Key>
+            <PropertyRef Name="IdGenero" />
+          </Key>
+          <Property Name="IdGenero" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_GenerosMusicales">
+          <Key>
+            <PropertyRef Name="CodigoGenero" />
+          </Key>
+          <Property Name="CodigoGenero" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Imagen" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Impuestos">
+          <Key>
+            <PropertyRef Name="IdImpuesto" />
+          </Key>
+          <Property Name="IdImpuesto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Porcentaje" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Modulos">
+          <Key>
+            <PropertyRef Name="IdModulo" />
+          </Key>
+          <Property Name="IdModulo" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Perfiles">
+          <Key>
+            <PropertyRef Name="IdPerfil" />
+          </Key>
+          <Property Name="IdPerfil" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TB_PermisosPorModulo">
+          <Key>
+            <PropertyRef Name="IdPermiso" />
+          </Key>
+          <Property Name="IdPermiso" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPerfil" Type="int" Nullable="false" />
+          <Property Name="IdModulo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_TipoTarjetas">
+          <Key>
+            <PropertyRef Name="IdTarjeta" />
+          </Key>
+          <Property Name="IdTarjeta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_Usuarios">
+          <Key>
+            <PropertyRef Name="NumeroIdentificacion" />
+          </Key>
+          <Property Name="NumeroIdentificacion" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="IdGenero" Type="int" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="IdTarjeta" Type="int" Nullable="false" />
+          <Property Name="NumeroTarjeta" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IdPerfil" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_VentaEncabezado">
+          <Key>
+            <PropertyRef Name="NumeroFactura" />
+          </Key>
+          <Property Name="NumeroFactura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="NumeroIdentificacion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VentaMusicalDB.dbo.TB_VentaLinea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TB_VentaLinea">
+          <Key>
+            <PropertyRef Name="NumeroFactura" />
+            <PropertyRef Name="Linea" />
+            <PropertyRef Name="CodigoCancion" />
+            <PropertyRef Name="Precio" />
+            <PropertyRef Name="IdImpuesto" />
+          </Key>
+          <Property Name="NumeroFactura" Type="int" Nullable="false" />
+          <Property Name="Linea" Type="int" Nullable="false" />
+          <Property Name="CodigoCancion" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="IdImpuesto" Type="int" Nullable="false" />
+          <Property Name="PorcentajeDescuento" Type="decimal" Precision="28" Scale="2" />
+        </EntityType>
+        <Association Name="FK__TB_Permis__IdMod__2C3393D0">
+          <End Role="TB_Perfiles" Type="Self.TB_Perfiles" Multiplicity="1" />
+          <End Role="TB_PermisosPorModulo" Type="Self.TB_PermisosPorModulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Perfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="TB_PermisosPorModulo">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Permis__IdMod__2D27B809">
+          <End Role="TB_Modulos" Type="Self.TB_Modulos" Multiplicity="1" />
+          <End Role="TB_PermisosPorModulo" Type="Self.TB_PermisosPorModulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Modulos">
+              <PropertyRef Name="IdModulo" />
+            </Principal>
+            <Dependent Role="TB_PermisosPorModulo">
+              <PropertyRef Name="IdModulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdGen__31EC6D26">
+          <End Role="TB_Generos" Type="Self.TB_Generos" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Generos">
+              <PropertyRef Name="IdGenero" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdGenero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdPer__300424B4">
+          <End Role="TB_TipoTarjetas" Type="Self.TB_TipoTarjetas" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TipoTarjetas">
+              <PropertyRef Name="IdTarjeta" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdPer__30F848ED">
+          <End Role="TB_Perfiles" Type="Self.TB_Perfiles" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Perfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaE__Numer__3B75D760">
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="0..1" />
+          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuarios">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Principal>
+            <Dependent Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__Codig__3E52440B">
+          <End Role="TB_Canciones" Type="Self.TB_Canciones" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Canciones">
+              <PropertyRef Name="CodigoCancion" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="CodigoCancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__IdImp__3F466844">
+          <End Role="TB_Impuestos" Type="Self.TB_Impuestos" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Impuestos">
+              <PropertyRef Name="IdImpuesto" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="IdImpuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__Porce__3D5E1FD2">
+          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroFactura" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="NumeroFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VentaMusicalDBModelStoreContainer">
+          <EntitySet Name="TB_Canciones" EntityType="Self.TB_Canciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Generos" EntityType="Self.TB_Generos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_GenerosMusicales" EntityType="Self.TB_GenerosMusicales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Impuestos" EntityType="Self.TB_Impuestos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Modulos" EntityType="Self.TB_Modulos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Perfiles" EntityType="Self.TB_Perfiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PermisosPorModulo" EntityType="Self.TB_PermisosPorModulo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_TipoTarjetas" EntityType="Self.TB_TipoTarjetas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Usuarios" EntityType="Self.TB_Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_VentaEncabezado" EntityType="Self.TB_VentaEncabezado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_VentaLinea" EntityType="Self.TB_VentaLinea" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TB_VentaLinea].[NumeroFactura] AS [NumeroFactura], 
+    [TB_VentaLinea].[Linea] AS [Linea], 
+    [TB_VentaLinea].[CodigoCancion] AS [CodigoCancion], 
+    [TB_VentaLinea].[Precio] AS [Precio], 
+    [TB_VentaLinea].[IdImpuesto] AS [IdImpuesto], 
+    [TB_VentaLinea].[PorcentajeDescuento] AS [PorcentajeDescuento]
+    FROM [dbo].[TB_VentaLinea] AS [TB_VentaLinea]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__TB_Permis__IdMod__2C3393D0" Association="Self.FK__TB_Permis__IdMod__2C3393D0">
+            <End Role="TB_Perfiles" EntitySet="TB_Perfiles" />
+            <End Role="TB_PermisosPorModulo" EntitySet="TB_PermisosPorModulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Permis__IdMod__2D27B809" Association="Self.FK__TB_Permis__IdMod__2D27B809">
+            <End Role="TB_Modulos" EntitySet="TB_Modulos" />
+            <End Role="TB_PermisosPorModulo" EntitySet="TB_PermisosPorModulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdGen__31EC6D26" Association="Self.FK__TB_Usuari__IdGen__31EC6D26">
+            <End Role="TB_Generos" EntitySet="TB_Generos" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdPer__300424B4" Association="Self.FK__TB_Usuari__IdPer__300424B4">
+            <End Role="TB_TipoTarjetas" EntitySet="TB_TipoTarjetas" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdPer__30F848ED" Association="Self.FK__TB_Usuari__IdPer__30F848ED">
+            <End Role="TB_Perfiles" EntitySet="TB_Perfiles" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaE__Numer__3B75D760" Association="Self.FK__TB_VentaE__Numer__3B75D760">
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__Codig__3E52440B" Association="Self.FK__TB_VentaL__Codig__3E52440B">
+            <End Role="TB_Canciones" EntitySet="TB_Canciones" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__IdImp__3F466844" Association="Self.FK__TB_VentaL__IdImp__3F466844">
+            <End Role="TB_Impuestos" EntitySet="TB_Impuestos" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__Porce__3D5E1FD2" Association="Self.FK__TB_VentaL__Porce__3D5E1FD2">
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VentaMusicalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_Canciones">
+          <Key>
+            <PropertyRef Name="CodigoCancion" />
+          </Key>
+          <Property Name="CodigoCancion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoGenero" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="Self.FK__TB_VentaL__Codig__3E52440B" FromRole="TB_Canciones" ToRole="TB_VentaLinea" />
+        </EntityType>
+        <EntityType Name="TB_Generos">
+          <Key>
+            <PropertyRef Name="IdGenero" />
+          </Key>
+          <Property Name="IdGenero" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_Usuarios" Relationship="Self.FK__TB_Usuari__IdGen__31EC6D26" FromRole="TB_Generos" ToRole="TB_Usuarios" />
+        </EntityType>
+        <EntityType Name="TB_GenerosMusicales">
+          <Key>
+            <PropertyRef Name="CodigoGenero" />
+          </Key>
+          <Property Name="CodigoGenero" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TB_Impuestos">
+          <Key>
+            <PropertyRef Name="IdImpuesto" />
+          </Key>
+          <Property Name="IdImpuesto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Porcentaje" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="Self.FK__TB_VentaL__IdImp__3F466844" FromRole="TB_Impuestos" ToRole="TB_VentaLinea" />
+        </EntityType>
+        <EntityType Name="TB_Modulos">
+          <Key>
+            <PropertyRef Name="IdModulo" />
+          </Key>
+          <Property Name="IdModulo" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_PermisosPorModulo" Relationship="Self.FK__TB_Permis__IdMod__2D27B809" FromRole="TB_Modulos" ToRole="TB_PermisosPorModulo" />
+        </EntityType>
+        <EntityType Name="TB_Perfiles">
+          <Key>
+            <PropertyRef Name="IdPerfil" />
+          </Key>
+          <Property Name="IdPerfil" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_PermisosPorModulo" Relationship="Self.FK__TB_Permis__IdMod__2C3393D0" FromRole="TB_Perfiles" ToRole="TB_PermisosPorModulo" />
+          <NavigationProperty Name="TB_Usuarios" Relationship="Self.FK__TB_Usuari__IdPer__30F848ED" FromRole="TB_Perfiles" ToRole="TB_Usuarios" />
+        </EntityType>
+        <EntityType Name="TB_PermisosPorModulo">
+          <Key>
+            <PropertyRef Name="IdPermiso" />
+          </Key>
+          <Property Name="IdPermiso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPerfil" Type="Int32" Nullable="false" />
+          <Property Name="IdModulo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_Modulos" Relationship="Self.FK__TB_Permis__IdMod__2D27B809" FromRole="TB_PermisosPorModulo" ToRole="TB_Modulos" />
+          <NavigationProperty Name="TB_Perfiles" Relationship="Self.FK__TB_Permis__IdMod__2C3393D0" FromRole="TB_PermisosPorModulo" ToRole="TB_Perfiles" />
+        </EntityType>
+        <EntityType Name="TB_TipoTarjetas">
+          <Key>
+            <PropertyRef Name="IdTarjeta" />
+          </Key>
+          <Property Name="IdTarjeta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_Usuarios" Relationship="Self.FK__TB_Usuari__IdPer__300424B4" FromRole="TB_TipoTarjetas" ToRole="TB_Usuarios" />
+        </EntityType>
+        <EntityType Name="TB_Usuarios">
+          <Key>
+            <PropertyRef Name="NumeroIdentificacion" />
+          </Key>
+          <Property Name="NumeroIdentificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdGenero" Type="Int32" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="NumeroTarjeta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdPerfil" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_Generos" Relationship="Self.FK__TB_Usuari__IdGen__31EC6D26" FromRole="TB_Usuarios" ToRole="TB_Generos" />
+          <NavigationProperty Name="TB_Perfiles" Relationship="Self.FK__TB_Usuari__IdPer__30F848ED" FromRole="TB_Usuarios" ToRole="TB_Perfiles" />
+          <NavigationProperty Name="TB_TipoTarjetas" Relationship="Self.FK__TB_Usuari__IdPer__300424B4" FromRole="TB_Usuarios" ToRole="TB_TipoTarjetas" />
+          <NavigationProperty Name="TB_VentaEncabezado" Relationship="Self.FK__TB_VentaE__Numer__3B75D760" FromRole="TB_Usuarios" ToRole="TB_VentaEncabezado" />
+        </EntityType>
+        <EntityType Name="TB_VentaEncabezado">
+          <Key>
+            <PropertyRef Name="NumeroFactura" />
+          </Key>
+          <Property Name="NumeroFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Subtotal" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="NumeroIdentificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_Usuarios" Relationship="Self.FK__TB_VentaE__Numer__3B75D760" FromRole="TB_VentaEncabezado" ToRole="TB_Usuarios" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="Self.FK__TB_VentaL__Porce__3D5E1FD2" FromRole="TB_VentaEncabezado" ToRole="TB_VentaLinea" />
+        </EntityType>
+        <EntityType Name="TB_VentaLinea">
+          <Key>
+            <PropertyRef Name="NumeroFactura" />
+            <PropertyRef Name="Linea" />
+            <PropertyRef Name="CodigoCancion" />
+            <PropertyRef Name="Precio" />
+            <PropertyRef Name="IdImpuesto" />
+          </Key>
+          <Property Name="NumeroFactura" Type="Int32" Nullable="false" />
+          <Property Name="Linea" Type="Int32" Nullable="false" />
+          <Property Name="CodigoCancion" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="IdImpuesto" Type="Int32" Nullable="false" />
+          <Property Name="PorcentajeDescuento" Type="Decimal" Precision="28" Scale="2" />
+          <NavigationProperty Name="TB_Canciones" Relationship="Self.FK__TB_VentaL__Codig__3E52440B" FromRole="TB_VentaLinea" ToRole="TB_Canciones" />
+          <NavigationProperty Name="TB_Impuestos" Relationship="Self.FK__TB_VentaL__IdImp__3F466844" FromRole="TB_VentaLinea" ToRole="TB_Impuestos" />
+          <NavigationProperty Name="TB_VentaEncabezado" Relationship="Self.FK__TB_VentaL__Porce__3D5E1FD2" FromRole="TB_VentaLinea" ToRole="TB_VentaEncabezado" />
+        </EntityType>
+        <Association Name="FK__TB_VentaL__Codig__3E52440B">
+          <End Role="TB_Canciones" Type="Self.TB_Canciones" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Canciones">
+              <PropertyRef Name="CodigoCancion" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="CodigoCancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdGen__31EC6D26">
+          <End Role="TB_Generos" Type="Self.TB_Generos" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Generos">
+              <PropertyRef Name="IdGenero" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdGenero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__IdImp__3F466844">
+          <End Role="TB_Impuestos" Type="Self.TB_Impuestos" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Impuestos">
+              <PropertyRef Name="IdImpuesto" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="IdImpuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Permis__IdMod__2D27B809">
+          <End Role="TB_Modulos" Type="Self.TB_Modulos" Multiplicity="1" />
+          <End Role="TB_PermisosPorModulo" Type="Self.TB_PermisosPorModulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Modulos">
+              <PropertyRef Name="IdModulo" />
+            </Principal>
+            <Dependent Role="TB_PermisosPorModulo">
+              <PropertyRef Name="IdModulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Permis__IdMod__2C3393D0">
+          <End Role="TB_Perfiles" Type="Self.TB_Perfiles" Multiplicity="1" />
+          <End Role="TB_PermisosPorModulo" Type="Self.TB_PermisosPorModulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Perfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="TB_PermisosPorModulo">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdPer__30F848ED">
+          <End Role="TB_Perfiles" Type="Self.TB_Perfiles" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Perfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_Usuari__IdPer__300424B4">
+          <End Role="TB_TipoTarjetas" Type="Self.TB_TipoTarjetas" Multiplicity="1" />
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TipoTarjetas">
+              <PropertyRef Name="IdTarjeta" />
+            </Principal>
+            <Dependent Role="TB_Usuarios">
+              <PropertyRef Name="IdTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaE__Numer__3B75D760">
+          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="0..1" />
+          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuarios">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Principal>
+            <Dependent Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__Porce__3D5E1FD2">
+          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroFactura" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="NumeroFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VentaMusicalDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_Canciones" EntityType="Self.TB_Canciones" />
+          <EntitySet Name="TB_Generos" EntityType="Self.TB_Generos" />
+          <EntitySet Name="TB_GenerosMusicales" EntityType="Self.TB_GenerosMusicales" />
+          <EntitySet Name="TB_Impuestos" EntityType="Self.TB_Impuestos" />
+          <EntitySet Name="TB_Modulos" EntityType="Self.TB_Modulos" />
+          <EntitySet Name="TB_Perfiles" EntityType="Self.TB_Perfiles" />
+          <EntitySet Name="TB_PermisosPorModulo" EntityType="Self.TB_PermisosPorModulo" />
+          <EntitySet Name="TB_TipoTarjetas" EntityType="Self.TB_TipoTarjetas" />
+          <EntitySet Name="TB_Usuarios" EntityType="Self.TB_Usuarios" />
+          <EntitySet Name="TB_VentaEncabezado" EntityType="Self.TB_VentaEncabezado" />
+          <EntitySet Name="TB_VentaLinea" EntityType="Self.TB_VentaLinea" />
+          <AssociationSet Name="FK__TB_VentaL__Codig__3E52440B" Association="Self.FK__TB_VentaL__Codig__3E52440B">
+            <End Role="TB_Canciones" EntitySet="TB_Canciones" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdGen__31EC6D26" Association="Self.FK__TB_Usuari__IdGen__31EC6D26">
+            <End Role="TB_Generos" EntitySet="TB_Generos" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__IdImp__3F466844" Association="Self.FK__TB_VentaL__IdImp__3F466844">
+            <End Role="TB_Impuestos" EntitySet="TB_Impuestos" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Permis__IdMod__2D27B809" Association="Self.FK__TB_Permis__IdMod__2D27B809">
+            <End Role="TB_Modulos" EntitySet="TB_Modulos" />
+            <End Role="TB_PermisosPorModulo" EntitySet="TB_PermisosPorModulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Permis__IdMod__2C3393D0" Association="Self.FK__TB_Permis__IdMod__2C3393D0">
+            <End Role="TB_Perfiles" EntitySet="TB_Perfiles" />
+            <End Role="TB_PermisosPorModulo" EntitySet="TB_PermisosPorModulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdPer__30F848ED" Association="Self.FK__TB_Usuari__IdPer__30F848ED">
+            <End Role="TB_Perfiles" EntitySet="TB_Perfiles" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_Usuari__IdPer__300424B4" Association="Self.FK__TB_Usuari__IdPer__300424B4">
+            <End Role="TB_TipoTarjetas" EntitySet="TB_TipoTarjetas" />
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaE__Numer__3B75D760" Association="Self.FK__TB_VentaE__Numer__3B75D760">
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__Porce__3D5E1FD2" Association="Self.FK__TB_VentaL__Porce__3D5E1FD2">
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+            <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VentaMusicalDBModelStoreContainer" CdmEntityContainer="VentaMusicalDBEntities1">
+          <EntitySetMapping Name="TB_Canciones">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Canciones">
+              <MappingFragment StoreEntitySet="TB_Canciones">
+                <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
+                <ScalarProperty Name="CodigoGenero" ColumnName="CodigoGenero" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Generos">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Generos">
+              <MappingFragment StoreEntitySet="TB_Generos">
+                <ScalarProperty Name="IdGenero" ColumnName="IdGenero" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_GenerosMusicales">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_GenerosMusicales">
+              <MappingFragment StoreEntitySet="TB_GenerosMusicales">
+                <ScalarProperty Name="CodigoGenero" ColumnName="CodigoGenero" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Impuestos">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Impuestos">
+              <MappingFragment StoreEntitySet="TB_Impuestos">
+                <ScalarProperty Name="IdImpuesto" ColumnName="IdImpuesto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Modulos">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Modulos">
+              <MappingFragment StoreEntitySet="TB_Modulos">
+                <ScalarProperty Name="IdModulo" ColumnName="IdModulo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Perfiles">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Perfiles">
+              <MappingFragment StoreEntitySet="TB_Perfiles">
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PermisosPorModulo">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_PermisosPorModulo">
+              <MappingFragment StoreEntitySet="TB_PermisosPorModulo">
+                <ScalarProperty Name="IdPermiso" ColumnName="IdPermiso" />
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+                <ScalarProperty Name="IdModulo" ColumnName="IdModulo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_TipoTarjetas">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_TipoTarjetas">
+              <MappingFragment StoreEntitySet="TB_TipoTarjetas">
+                <ScalarProperty Name="IdTarjeta" ColumnName="IdTarjeta" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Usuarios">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_Usuarios">
+              <MappingFragment StoreEntitySet="TB_Usuarios">
+                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdGenero" ColumnName="IdGenero" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="IdTarjeta" ColumnName="IdTarjeta" />
+                <ScalarProperty Name="NumeroTarjeta" ColumnName="NumeroTarjeta" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_VentaEncabezado">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_VentaEncabezado">
+              <MappingFragment StoreEntitySet="TB_VentaEncabezado">
+                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_VentaLinea">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_VentaLinea">
+              <MappingFragment StoreEntitySet="TB_VentaLinea">
+                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
+                <ScalarProperty Name="Linea" ColumnName="Linea" />
+                <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="IdImpuesto" ColumnName="IdImpuesto" />
+                <ScalarProperty Name="PorcentajeDescuento" ColumnName="PorcentajeDescuento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

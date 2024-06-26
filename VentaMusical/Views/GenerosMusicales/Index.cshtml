@@ -1,0 +1,25 @@
+﻿@model List<VentaMusical.Models.ViewModels.GenerosMusicalesViewModel>
+
+@{
+    ViewBag.Title = "Lista de Géneros Musicales";
+}
+
+<div class="container">
+    <div class="add-genre-btn">
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Nuevo Género</button>
+    </div>
+    <div class="row">
+        @foreach (var genero in Model)
+        {
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <img src="@genero.Imagen" alt="Imagen de la carta">                  
+                    <div class="card-buttons">
+                        <button class="edit"><i class="fas fa-edit"></i></button>
+                        <button class="delete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

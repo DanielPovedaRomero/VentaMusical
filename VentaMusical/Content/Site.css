@@ -1,20 +1,70 @@
-﻿/* Set padding to keep content from hitting the edges */
-.body-content {
-    margin-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+﻿/*Nav del menu*/
+
+.custom-nav {
+    background-color: #61B65F !important;
+    color: white !important;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+.custom-nav a {
+    font-size: 1.5em;
+    color: white !important;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+/*Generos musicales*/
+
+.card {
+    margin: 16px;
+    width: 150px;
+}
+
+    .card img {
+        width: 100%;
+        height: auto;
+    }
+
+.card-body {
+    padding: 16px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.card-description {
+    font-size: 1rem;
+    color: #666;
+}
+
+.card-buttons {
+    display: flex;
+}
+
+    .card-buttons button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .card-buttons button.edit {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .card-buttons button.delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .card-buttons button i {
+            margin-right: 8px;
+        }
+
+.add-genre-btn {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
 }
