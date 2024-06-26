@@ -41,27 +41,27 @@
     display: flex;
 }
 
-    .card-buttons button {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-    }
+.card-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-        .card-buttons button.edit {
-            background-color: #4CAF50;
-            color: white;
-        }
+.card-buttons button.edit {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        .card-buttons button.delete {
-            background-color: #f44336;
-            color: white;
-        }
+.card-buttons button.delete {
+    background-color: #f44336;
+    color: white;
+}
 
-        .card-buttons button i {
-            margin-right: 8px;
-        }
+.card-buttons button i {
+    margin-right: 8px;
+}
 
 .add-genre-btn {
     margin: 20px 0;
