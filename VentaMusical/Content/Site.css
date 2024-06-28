@@ -14,12 +14,13 @@
 
 .card {
     margin: 16px;
-    width: 150px;
+    width: 150px; 
 }
 
 .card img {
     width: 100%;
-    height: auto;
+    height: 150px; 
+    object-fit: cover; 
 }
 
 .card-body {

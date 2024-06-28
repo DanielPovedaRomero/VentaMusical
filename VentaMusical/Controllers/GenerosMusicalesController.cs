@@ -31,7 +31,7 @@ namespace VentaMusical.Controllers
                         {
                             CodigoGenero = x.CodigoGenero,
                             Descripcion = x.Descripcion,
-                            Imagen = String.IsNullOrEmpty(x.Imagen) ? Url.Content("~/Content/Images/DefaultAlbum.png") : x.Imagen,
+                            Imagen = x.Imagen,
                         }).ToList();                      
                     }
                 }
@@ -45,16 +45,17 @@ namespace VentaMusical.Controllers
         }
 
         [HttpPost]
-        public ActionResult Guardar(string descripcion, HttpPostedFileBase imagen)
+        public ActionResult Guardar(string Descripcion, string Imagen)
         {
             try
-            {
+            {          
+
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
                     TB_GenerosMusicales genero = new TB_GenerosMusicales()
                     {
-                        Descripcion = descripcion,
-                        Imagen = imagen.ToString(),
+                        Descripcion = Descripcion,
+                        Imagen = Imagen,
                     };
 
                     db.TB_GenerosMusicales.Add(genero);
