@@ -6,14 +6,14 @@
 
 <div class="container">
     <div class="add-genre-btn">
-        <button class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Nuevo Género</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-plus"></i> Agregar Nuevo Género</button>
     </div>
     <div class="row">
         @foreach (var genero in Model)
         {
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
                 <div class="card">
-                    <img src="@genero.Imagen" alt="Imagen de la carta">                  
+                    <img src="@genero.Imagen" alt="Imagen de la carta">
                     <div class="card-buttons">
                         <button class="edit"><i class="fas fa-edit"></i></button>
                         <button class="delete"><i class="fas fa-trash-alt"></i></button>
@@ -23,3 +23,76 @@
         }
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Género</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="Descripcion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="Descripcion" name="Descripcion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Imagen" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="Imagen" name="Imagen" accept="image/*" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="saveButton">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#saveButton').click(function (e) {
+                Guardar(e);
+            });
+
+            function Guardar(e) {
+                e.preventDefault();
+
+                var descripcion = document.getElementById("Descripcion").value;
+                var imagenFile = document.getElementById("Imagen").files[0];
+
+                var data = {
+                    Descripcion: descripcion,
+                    Imagen: imagenFile
+                };
+
+                var formData = new FormData();
+                formData.append('Descripcion', descripcion);
+                formData.append('Imagen', imagenFile);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/GenerosMusicales/Guardar",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la solicitud", error);
+                    }
+                });
+            }
+        });
+
+    </script>
+}

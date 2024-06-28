@@ -6,22 +6,23 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <!-- Sweet Alert -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-
 
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-nav">
-        <div class="container">      
+        <div class="container">
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Generos Musicales", "Index", "GenerosMusicales", new { area = "" }, new { @class = "nav-link" })</li>         
+                    <li>@Html.ActionLink("Generos Musicales", "Index", "GenerosMusicales", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -36,6 +37,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
