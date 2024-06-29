@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using VentaMusical.Constantes;
 using VentaMusical.Models;
@@ -32,7 +30,7 @@ namespace VentaMusical.Controllers
                             CodigoGenero = x.CodigoGenero,
                             Descripcion = x.Descripcion,
                             Imagen = x.Imagen,
-                        }).ToList();                      
+                        }).ToList();
                     }
                 }
             }
@@ -48,7 +46,7 @@ namespace VentaMusical.Controllers
         public ActionResult Guardar(string Descripcion, string Imagen)
         {
             try
-            {          
+            {
 
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
@@ -64,10 +62,64 @@ namespace VentaMusical.Controllers
             }
             catch (Exception ex)
             {
-                return Json( new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
+                return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
             }
 
-            return Json( new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Exito, Resultado = true });
+            return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Exito, Resultado = true });
+        }
+
+        [HttpPost]
+        public ActionResult Eliminar(int codigoGenero)
+        {
+            try
+            {
+                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                {
+                    var genero = db.TB_GenerosMusicales.Find(codigoGenero);
+                    if (genero == null)
+                    {
+                        return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.NoEncontrado, Resultado = false });
+                    }
+
+                    db.TB_GenerosMusicales.Remove(genero);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
+            }
+
+            return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
+        }
+
+        [HttpGet]
+        public ActionResult ObtenerGenero(int codigoGenero)
+        {
+            try
+            {
+                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                {
+                    var genero = db.TB_GenerosMusicales.Find(codigoGenero);
+                    if (genero == null)
+                    {
+                        return Json(null, JsonRequestBehavior.AllowGet);
+                    }
+
+                    var result = new
+                    {
+                        CodigoGenero = genero.CodigoGenero,
+                        Descripcion = genero.Descripcion,
+                        Imagen = genero.Imagen
+                    };
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }         
         }
     }
 }
