@@ -43,29 +43,47 @@ namespace VentaMusical.Controllers
         }
 
         [HttpPost]
-        public ActionResult Guardar(string Descripcion, string Imagen)
+        public ActionResult Guardar(int Codigo, string Descripcion, string Imagen)
         {
             try
             {
-
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
-                    TB_GenerosMusicales genero = new TB_GenerosMusicales()
+                    if (Codigo == 0)
                     {
-                        Descripcion = Descripcion,
-                        Imagen = Imagen,
-                    };
+                        
+                        TB_GenerosMusicales nuevoGenero = new TB_GenerosMusicales()
+                        {
+                            Descripcion = Descripcion,
+                            Imagen = Imagen
+                        };
 
-                    db.TB_GenerosMusicales.Add(genero);
+                        db.TB_GenerosMusicales.Add(nuevoGenero);
+                    }
+                    else
+                    {
+                   
+                        TB_GenerosMusicales generoExistente = db.TB_GenerosMusicales.Find(Codigo);
+                        if (generoExistente != null)
+                        {
+                            generoExistente.Descripcion = Descripcion;
+                            generoExistente.Imagen = Imagen;
+                        }
+                        else
+                        {
+                            return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.NoEncontrado, Resultado = false });
+                        }
+                    }
+
                     db.SaveChanges();
                 }
+
+                return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
             }
             catch (Exception ex)
             {
                 return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
             }
-
-            return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Exito, Resultado = true });
         }
 
         [HttpPost]

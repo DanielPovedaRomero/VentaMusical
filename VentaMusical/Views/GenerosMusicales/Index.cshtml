@@ -74,13 +74,13 @@
 
         $(document).ready(function () {
 
-
             /*[GUARDAR]*/
             $('#guardar').on('click', function (e) {
                 e.preventDefault();
 
-                var descripcion = document.getElementById("Descripcion").value;
-                var imagenFile = document.getElementById("Imagen").files[0];
+                var descripcion = $("#Descripcion").val();
+                var imagenFile = $("#Imagen")[0].files[0];
+                var codigo = $("#CodigoGenero").val();
 
                 if (!descripcion || !imagenFile) {
                     alert("Por favor, complete la descripción y seleccione una imagen.");
@@ -92,8 +92,12 @@
                     var imagenBase64 = e.target.result.split(',')[1];
                     var data = {
                         Descripcion: descripcion,
-                        Imagen: imagenBase64
+                        Imagen: imagenBase64,
+                        Codigo: codigo
                     };
+
+                    // Mostrar la imagen seleccionada en el preview
+                    $('#ImagenPreview').attr('src', e.target.result);
 
                     $.ajax({
                         type: "POST",
@@ -103,9 +107,13 @@
                         success: function (response) {
                             console.log(response);
                             // Manejar la respuesta del servidor aquí
+                            // Por ejemplo, cerrar el modal después de guardar
+                            $('#exampleModal').modal('hide');
+                            location.reload(); // O recargar la página
                         },
                         error: function (xhr, status, error) {
                             console.error("Error en la solicitud", error);
+                            alert("Ocurrió un error al intentar guardar el género.");
                         }
                     });
                 };
@@ -160,6 +168,7 @@
 
                             $('#exampleModalLabel').text('Editar Registro');
                             $('#exampleModal').modal('show');
+
                         } else {
                             alert("Ocurrió un error al intentar obtener el género.");
                         }
@@ -175,6 +184,7 @@
                     $('#ImagenPreview').attr('src', '').hide();
                     $('#exampleModalLabel').text('Agregar Nuevo Género');
                 });
+
             });
 
 
