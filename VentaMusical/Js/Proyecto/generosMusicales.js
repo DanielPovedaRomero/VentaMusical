@@ -105,25 +105,26 @@ $(document).ready(function () {
             type: 'GET',
             data: { codigoGenero: codigoGenero },
             success: function (response) {
-                if (response) {
-                    $(frmCodigoGenero).val(response.CodigoGenero);
-                    $(frmDescripcion).val(response.Descripcion);
-                    if (response.Imagen) {
-                        CargarImagenEnPreviewYFile(response.Imagen, frmImagenPreview, frmImagen);
-                    } else {
-                        $(frmImagenPreview).attr('src', rutaImagenDefault).show();
-                        LimpiarSeleccionImagen(frmImagen); 
-                    }
-
-                    $(frmTextoModal).text(textoEditar);
-                    $(frmModal).modal('show');
-
+                console.log(response);
+                if (response)
+                {                   
+                   $(frmCodigoGenero).val(response.CodigoGenero);
+                   $(frmDescripcion).val(response.Descripcion);
+                   if (response.Imagen) {
+                       CargarImagenEnPreviewYFile(response.Imagen, frmImagenPreview, frmImagen);
+                   } else {
+                       $(frmImagenPreview).attr('src', rutaImagenDefault).show();
+                       LimpiarSeleccionImagen(frmImagen);
+                   }
+                   $(frmTextoModal).text(textoEditar);
+                   $(frmModal).modal('show');  
+                   
                 } else {
-                    alert("Ocurrió un error al intentar obtener el género.");
+                    MostrarAlertaError("Ocurrió un error.");
                 }
             },
             error: function () {
-                alert("Ocurrió un error al intentar obtener el género.");
+                MostrarAlertaError("Ocurrió un error.");
             }
         });
 
