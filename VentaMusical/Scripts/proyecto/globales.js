@@ -55,38 +55,57 @@
         });
     }
 
-    function CargarImagenEnPreviewYFile(imagenBase64, elemento, elementoImagen) {
-        // Mostrar la imagen en elemento
-        $(elemento).attr('src', 'data:image;base64,' + imagenBase64).show();
+    // Función para cargar una imagen en un elemento de imagen y en un input file
+    function CargarImagenEnPreviewYFile(imagenData, elementoImagen, elementoInputFile) {
+        if (esBase64(imagenData)) {
+            // Mostrar la imagen en el elemento de imagen
+            $(elementoImagen).attr('src', 'data:image/png;base64,' + imagenData).show();
 
-        // Crear un Blob a partir de la imagen base64
-        var byteCharacters = atob(imagenBase64);
-        var byteNumbers = new Array(byteCharacters.length);
-        for (var i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
+            // Crear un Blob a partir de la imagen base64
+            var byteCharacters = atob(imagenData);
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var blob = new Blob([byteArray], { type: 'image/png' });
+
+            // Crear un File desde el Blob para asignarlo al input file
+            var fileName = 'imagen.png'; // Nombre de archivo
+            var imagenFile = new File([blob], fileName, { type: 'image/png' });
+
+            // Asignar imagenFile al elemento de entrada de archivo
+            AsignarImagenAInputFile(imagenFile, elementoInputFile);
+        } else if (typeof imagenData === 'string') {
+            // Mostrar la imagen desde la URL relativa
+            $(elementoImagen).attr('src', imagenData).show();
+            LimpiarSeleccionImagen(elementoInputFile); // Limpiar la selección de archivo
+        } else {
+            console.error('Tipo de datos de imagen no válido.');
         }
-        var byteArray = new Uint8Array(byteNumbers);
-        var blob = new Blob([byteArray], { type: 'image/png' });
-
-        // Crear un File desde el Blob para asignarlo a imagenFile
-        var fileName = 'imagen.png'; // Nombre de archivo
-        var imagenFile = new File([blob], fileName, { type: 'image/png' });
-
-        // Asignar imagenFile al elemento de entrada de archivo #Imagen
-        AsignarImagenAInputFile(imagenFile, elementoImagen);
     }
 
-    // Función para asignar un archivo al elemento de entrada de archivo #Imagen
-    function AsignarImagenAInputFile(imagenFile, elementoImagen) {
+    // Función para verificar si el dato es una cadena base64 válida
+    function esBase64(s) {
+        try {
+            return btoa(atob(s)) == s;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // Función para asignar un archivo al elemento de entrada de archivo
+    function AsignarImagenAInputFile(imagenFile, elementoInputFile) {
         // Crear un objeto FileList simulado
         var fileList = new DataTransfer();
         fileList.items.add(imagenFile);
 
-        // Asignar fileList al elemento de entrada de archivo #Imagen
-        $(elementoImagen)[0].files = fileList.files;
+        // Asignar fileList al elemento de entrada de archivo
+        $(elementoInputFile)[0].files = fileList.files;
     }
 
-    // Función para limpiar la selección de archivo #Imagen
-    function LimpiarSeleccionImagen(elementoImagen) {
-        $(elementoImagen).val(''); // Esto limpia la selección de archivo en el input
+    // Función para limpiar la selección de archivo
+    function LimpiarSeleccionImagen(elementoInputFile) {
+        $(elementoInputFile).val(''); // Esto limpia la selección de archivo en el input
     }
+
