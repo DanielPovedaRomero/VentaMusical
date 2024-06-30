@@ -126,24 +126,23 @@
             /*[ELIMINAR]*/
             $('.delete').on('click', function (e) {
                 var codigoGenero = $(this).data('id');
-
-                if (confirm("¿Estás seguro de que deseas eliminar este género?")) {
+                MostrarAlertaPregunta(() => {
                     $.ajax({
                         url: '/GenerosMusicales/Eliminar',
                         type: 'POST',
                         data: { codigoGenero: codigoGenero },
                         success: function (response) {
                             if (response.Resultado) {
-                                location.reload(); // Recarga la página después de eliminar
+                                MostrarAlertaExitosa(response.Mensaje);
                             } else {
-                                alert(response.Mensaje);
+                                MostrarAlertaError(response.Mensaje);
                             }
                         },
                         error: function () {
-                            alert("Ocurrió un error al intentar eliminar el género.");
+                            MostrarAlertaError("Ocurrió un error.");
                         }
                     });
-                }
+                });
             });
 
 

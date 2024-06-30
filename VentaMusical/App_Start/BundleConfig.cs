@@ -25,6 +25,16 @@ namespace VentaMusical
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Js creados en el proyecto
+
+            bundles.Add(new ScriptBundle("~/bundles/globales").Include(
+                "~/Scripts/proyecto/globales.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/generosMusicales").Include(
+                       "~/Scripts/proyecto/generosMusicales.js"));
+
+      
         }
     }
 }
