@@ -33,7 +33,6 @@ namespace VentaMusical
             bundles.Add(new ScriptBundle("~/bundles/generosMusicales").Include(
                 "~/Js/Proyecto//generosMusicales.js"));
 
-
         }
     }
 }
