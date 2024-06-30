@@ -108,7 +108,7 @@ namespace VentaMusical.Controllers
                 return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
             }
 
-            return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
+            return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Eliminar_Exito, Resultado = true });
         }
 
         [HttpGet]

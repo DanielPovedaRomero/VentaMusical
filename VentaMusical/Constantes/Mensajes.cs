@@ -4,6 +4,7 @@
     {
         public static string Error = "Error en la solicitud";
         public static string Exito = "Registro exitoso";
+        public static string Eliminar_Exito = "Registro eliminado";
         public static string NoEncontrado = "Registro no encontrado";
     }
 }
