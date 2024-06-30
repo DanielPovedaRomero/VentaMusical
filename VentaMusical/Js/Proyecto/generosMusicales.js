@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    /*[GUARDAR]*/
+    //[GUARDAR]
     $('#guardar').on('click', function (e) {
         e.preventDefault();
 
@@ -8,72 +8,79 @@
         var imagenFile = $("#Imagen")[0].files[0];
         var codigo = $("#CodigoGenero").val();
 
-        if (!descripcion || !imagenFile) {
-            alert("Por favor, complete la descripción y seleccione una imagen.");
+        if (!descripcion) {
+            MostrarAlertaAdvertencia("Por favor, ingrese una descripción");
             return;
         }
 
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var imagenBase64 = e.target.result.split(',')[1];
-            var data = {
-                Descripcion: descripcion,
-                Imagen: imagenBase64,
-                Codigo: codigo
+        var imagenBase64;
+
+        // Verificar si se seleccionó un archivo de imagen
+        if (imagenFile) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                imagenBase64 = e.target.result.split(',')[1];
+                $('#ImagenPreview').attr('src', e.target.result);
+                GuardarGenero(descripcion, imagenBase64, codigo);
             };
 
-            // Mostrar la imagen seleccionada en el preview
-            $('#ImagenPreview').attr('src', e.target.result);
-
-            $.ajax({
-                type: "POST",
-                url: "/GenerosMusicales/Guardar",
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (response) {
-                    console.log(response);
-                    // Manejar la respuesta del servidor aquí
-                    // Por ejemplo, cerrar el modal después de guardar
-                    $('#exampleModal').modal('hide');
-                    location.reload(); // O recargar la página
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error en la solicitud", error);
-                    alert("Ocurrió un error al intentar guardar el género.");
-                }
-            });
-        };
-
-        // Leer el archivo como URL base64
-        reader.readAsDataURL(imagenFile);
+            reader.readAsDataURL(imagenFile);
+        } else {
+            GuardarGenero(descripcion, null, codigo);
+        }
     });
 
+    function GuardarGenero(descripcion, imagenBase64, codigo) {
 
-    /*[ELIMINAR]*/
+        var data = {
+            Descripcion: descripcion,
+            Imagen: imagenBase64,
+            Codigo: codigo
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/GenerosMusicales/Guardar",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (response) {
+
+                if (response.Resultado) {
+                    MostrarAlertaExitosa(response.Mensaje);
+                    $('#exampleModal').modal('hide');
+                } else {
+                    MostrarAlertaError(response.Mensaje);
+                }
+            },
+            error: function (xhr, status, error) {
+                MostrarAlertaError("Ocurrió un error.");
+            }
+        });
+    }
+
+    //[ELIMINAR]
     $('.delete').on('click', function (e) {
         var codigoGenero = $(this).data('id');
-
-        if (confirm("¿Estás seguro de que deseas eliminar este género?")) {
+        MostrarAlertaPregunta(() => {
             $.ajax({
                 url: '/GenerosMusicales/Eliminar',
                 type: 'POST',
                 data: { codigoGenero: codigoGenero },
                 success: function (response) {
                     if (response.Resultado) {
-                        location.reload(); // Recarga la página después de eliminar
+                        MostrarAlertaExitosa(response.Mensaje);
                     } else {
-                        alert(response.Mensaje);
+                        MostrarAlertaError(response.Mensaje);
                     }
                 },
                 error: function () {
-                    alert("Ocurrió un error al intentar eliminar el género.");
+                    MostrarAlertaError("Ocurrió un error.");
                 }
             });
-        }
+        });
     });
 
-
-    /*[CONSULTA PARA EDITAR]*/
+    //[CONSULTA PARA EDITAR]
     $('.edit').on('click', function () {
         var codigoGenero = $(this).data('id');
 
@@ -87,9 +94,10 @@
                     $('#Descripcion').val(response.Descripcion);
 
                     if (response.Imagen) {
-                        $('#ImagenPreview').attr('src', 'data:image;base64,' + response.Imagen).show();
+                        CargarImagenEnPreviewYFile(response.Imagen, '#ImagenPreview', '#Imagen');
                     } else {
-                        $('#ImagenPreview').attr('src', '@Url.Content("~/Content/Images/DefaultAlbum.png")').show();
+                        $('#ImagenPreview').attr('src', '/Content/Images/DefaultAlbum.png').show();
+                        LimpiarSeleccionImagen('#Imagen'); 
                     }
 
                     $('#exampleModalLabel').text('Editar Registro');
@@ -108,13 +116,12 @@
             $('#myForm')[0].reset();
             $('#CodigoGenero').val(0);
             $('#ImagenPreview').attr('src', '').hide();
+            LimpiarSeleccionImagen('#Imagen');
             $('#exampleModalLabel').text('Agregar Nuevo Género');
         });
-
     });
 
-
-    /*[CAMBIAR IMAGEN]*/
+    //[CAMBIAR IMAGEN]
     $('#Imagen').on('change', function (e) {
         var file = e.target.files[0];
         if (file) {
@@ -125,8 +132,8 @@
             reader.readAsDataURL(file);
         } else {
             // Si no se selecciona ningún archivo, mostrar la imagen por defecto
-            $('#ImagenPreview').attr('src', '@Url.Content("~/Content/Images/DefaultAlbum.png")');
+            $('#ImagenPreview').attr('src', '/Content/Images/DefaultAlbum.png');
         }
     });
 
-}); //document ready
+}); 
