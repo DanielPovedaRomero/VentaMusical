@@ -74,7 +74,7 @@
 
         $(document).ready(function () {
 
-            /*[GUARDAR]*/
+       
             $('#guardar').on('click', function (e) {
                 e.preventDefault();
 
@@ -146,6 +146,8 @@
             });
 
 
+
+
             /*[CONSULTA PARA EDITAR]*/
             $('.edit').on('click', function () {
                 var codigoGenero = $(this).data('id');
@@ -160,9 +162,10 @@
                             $('#Descripcion').val(response.Descripcion);
 
                             if (response.Imagen) {
-                                $('#ImagenPreview').attr('src', 'data:image;base64,' + response.Imagen).show();
+                                CargarImagenEnPreviewYFile(response.Imagen, '#ImagenPreview', '#Imagen');
                             } else {
-                               $('#ImagenPreview').attr('src', '@Url.Content("~/Content/Images/DefaultAlbum.png")').show();
+                                $('#ImagenPreview').attr('src', '@Url.Content("~/Content/Images/DefaultAlbum.png")').show();
+                                LimpiarSeleccionImagen('#Imagen'); // Limpiar la selección de archivo #Imagen
                             }
 
                             $('#exampleModalLabel').text('Editar Registro');
@@ -181,10 +184,15 @@
                     $('#myForm')[0].reset();
                     $('#CodigoGenero').val(0);
                     $('#ImagenPreview').attr('src', '').hide();
+                    LimpiarSeleccionImagen('#Imagen'); // Limpiar la selección de archivo #Imagen
                     $('#exampleModalLabel').text('Agregar Nuevo Género');
                 });
-
             });
+
+
+
+
+
 
 
             /*[CAMBIAR IMAGEN]*/
@@ -201,6 +209,9 @@
                     $('#ImagenPreview').attr('src', '@Url.Content("~/Content/Images/DefaultAlbum.png")');
                 }
             });
+
+
+
 
         }); //document ready
 

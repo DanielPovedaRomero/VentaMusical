@@ -55,3 +55,38 @@
         });
     }
 
+    function CargarImagenEnPreviewYFile(imagenBase64, elemento, elementoImagen) {
+        // Mostrar la imagen en elemento
+        $(elemento).attr('src', 'data:image;base64,' + imagenBase64).show();
+
+        // Crear un Blob a partir de la imagen base64
+        var byteCharacters = atob(imagenBase64);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        var blob = new Blob([byteArray], { type: 'image/png' });
+
+        // Crear un File desde el Blob para asignarlo a imagenFile
+        var fileName = 'imagen.png'; // Nombre de archivo
+        var imagenFile = new File([blob], fileName, { type: 'image/png' });
+
+        // Asignar imagenFile al elemento de entrada de archivo #Imagen
+        AsignarImagenAInputFile(imagenFile, elementoImagen);
+    }
+
+    // Función para asignar un archivo al elemento de entrada de archivo #Imagen
+    function AsignarImagenAInputFile(imagenFile, elementoImagen) {
+        // Crear un objeto FileList simulado
+        var fileList = new DataTransfer();
+        fileList.items.add(imagenFile);
+
+        // Asignar fileList al elemento de entrada de archivo #Imagen
+        $(elementoImagen)[0].files = fileList.files;
+    }
+
+    // Función para limpiar la selección de archivo #Imagen
+    function LimpiarSeleccionImagen(elementoImagen) {
+        $(elementoImagen).val(''); // Esto limpia la selección de archivo en el input
+    }
