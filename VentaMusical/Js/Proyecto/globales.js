@@ -1,4 +1,17 @@
 ﻿
+    $('table').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        }
+
+    });
+
     function MostrarAlertaExitosa(mensaje = "Proceso realizado con éxito") {
         Swal.fire({
             icon: 'success',

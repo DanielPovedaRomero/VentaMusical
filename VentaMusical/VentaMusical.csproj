@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constantes\Mensajes.cs" />
+    <Compile Include="Controllers\CancionesController.cs" />
     <Compile Include="Controllers\GenerosMusicalesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -182,8 +183,10 @@
     <Compile Include="Models\TB_VentaLinea.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\CancionesViewModel.cs" />
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
+    <Compile Include="Models\ViewModels\VistaCancionesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +261,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\GenerosMusicales\Index.cshtml" />
+    <Content Include="Views\Canciones\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
