@@ -1,4 +1,6 @@
 ﻿
+$(document).ready(function () {
+
     $('table').DataTable({
         "paging": true,
         "lengthChange": false,
@@ -11,6 +13,8 @@
         }
 
     });
+
+});
 
     function MostrarAlertaExitosa(mensaje = "Proceso realizado con éxito") {
         Swal.fire({
@@ -121,4 +125,3 @@
     function LimpiarSeleccionImagen(elementoInputFile) {
         $(elementoInputFile).val(''); // Esto limpia la selección de archivo en el input
     }
-
