@@ -160,6 +160,19 @@ $(document).ready(function () {
             $(frmImagenPreview).attr('src', rutaImagenDefault);
         }
     });
+
+    //[FORMATO PRECIO]
+    $(frmPrecio).on('blur', function () {
+ 
+        var valor = $(this).val();
+
+        if (valor == 'NaN' || valor == '' ) { $(this).val('0.00'); return; }
+
+        // Convertir a número y formatear a 2 decimales
+        var valorFormateado = parseFloat(valor).toFixed(2);
+
+        $(this).val(valorFormateado);
+    });
     
 });
 
