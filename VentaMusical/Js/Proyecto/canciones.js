@@ -1,8 +1,10 @@
-﻿let frmDescripcion = "#Descripcion";
+﻿let frmNombre = "#Nombre";
 let frmImagen = "#Imagen";
-let frmCodigoGenero = "#CodigoGenero";
+let frmPrecio = "#Precio";
+let frmGenero = "#Genero";
+let frmCodigoCancion = "#CodigoCancion";
 let frmImagenPreview = "#ImagenPreview";
-let frmModal = "#exampleModal"; 
+let frmModal = "#exampleModal";
 let frmTextoModal = "#exampleModalLabel";
 let frmFormulario = "#myForm";
 
@@ -20,12 +22,18 @@ $(document).ready(function () {
     $(btnGuardar).on('click', function (e) {
         e.preventDefault();
 
-        var descripcion = $(frmDescripcion).val();
+        var nombre = $(frmNombre).val();
         var imagenFile = $(frmImagen)[0].files[0];
-        var codigo = $(frmCodigoGenero).val();
+        var codigoCancion = $(frmCodigoCancion).val();
+        var codigoGenero = $(frmGenero).val();
+        var precio = $(frmPrecio).val();
 
-        if (!descripcion) {
-            MostrarAlertaAdvertencia("Por favor, ingrese una descripción");
+        console.log(nombre);
+        console.log(codigoGenero);
+        console.log(precio);
+
+        if (!nombre || !codigoGenero || !precio ) {
+            MostrarAlertaAdvertencia("Por favor, complete los campos de nombre, precio y seleccione un genero musical");
             return;
         }
 
@@ -37,26 +45,28 @@ $(document).ready(function () {
             reader.onload = function (e) {
                 imagenBase64 = e.target.result.split(',')[1];
                 $(frmImagenPreview).attr('src', e.target.result);
-                GuardarGenero(descripcion, imagenBase64, codigo);
+                GuardarCancion(nombre, imagenBase64, codigoCancion, codigoGenero, precio);
             };
 
             reader.readAsDataURL(imagenFile);
         } else {
-            GuardarGenero(descripcion, null, codigo);
+            GuardarCancion(nombre, null, codigoCancion, codigoGenero, precio);
         }
     });
 
-    function GuardarGenero(descripcion, imagenBase64, codigo) {
-
+    function GuardarCancion(nombre, imagenBase64, codigoCancion, codigoGenero, precio) {
+       
         var data = {
-            Descripcion: descripcion,
+            Nombre: nombre,
             Imagen: imagenBase64,
-            Codigo: codigo
+            CodigoGenero: codigoGenero,
+            CodigoCancion: codigoCancion,
+            Precio : precio
         };
 
         $.ajax({
             type: "POST",
-            url: "/GenerosMusicales/Guardar",
+            url: "/Canciones/Guardar",
             data: JSON.stringify(data),
             contentType: "application/json",
             success: function (response) {
@@ -76,12 +86,12 @@ $(document).ready(function () {
 
     //[ELIMINAR]
     $(btnEliminar).on('click', function (e) {
-        var codigoGenero = $(this).data('id');
+        var codigoCancion = $(this).data('id');
         MostrarAlertaPregunta(() => {
             $.ajax({
-                url: '/GenerosMusicales/Eliminar',
+                url: '/Canciones/Eliminar',
                 type: 'POST',
-                data: { codigoGenero: codigoGenero },
+                data: { codigoCancion: codigoCancion },
                 success: function (response) {
                     if (response.Resultado) {
                         MostrarAlertaExitosa(response.Mensaje);
@@ -98,26 +108,27 @@ $(document).ready(function () {
 
     //[CONSULTAR]
     $(btnEditar).on('click', function () {
-        var codigoGenero = $(this).data('id');
+        var codigoCancion = $(this).data('id');
 
         $.ajax({
-            url: '/GenerosMusicales/ObtenerGenero',
+            url: '/Canciones/ObtenerCancion',
             type: 'GET',
-            data: { codigoGenero: codigoGenero },
+            data: { codigoCancion: codigoCancion },
             success: function (response) {
-                if (response)
-                {                   
-                   $(frmCodigoGenero).val(response.CodigoGenero);
-                   $(frmDescripcion).val(response.Descripcion);
-                   if (response.Imagen) {
-                       CargarImagenEnPreviewYFile(response.Imagen, frmImagenPreview, frmImagen);
-                   } else {
-                       $(frmImagenPreview).attr('src', rutaImagenDefault).show();
-                       LimpiarSeleccionImagen(frmImagen);
-                   }
-                   $(frmTextoModal).text(textoEditar);
-                   $(frmModal).modal('show');  
-                   
+                if (response) {
+                    $(frmCodigoCancion).val(response.CodigoCancion);
+                    $(frmNombre).val(response.Nombre);
+                    $(frmPrecio).val(response.Precio);
+                    $(frmGenero).val(response.CodigoGenero);
+                    if (response.Imagen) {
+                        CargarImagenEnPreviewYFile(response.Imagen, frmImagenPreview, frmImagen);
+                    } else {
+                        $(frmImagenPreview).attr('src', rutaImagenDefault).show();
+                        LimpiarSeleccionImagen(frmImagen);
+                    }
+                    $(frmTextoModal).text(textoEditar);
+                    $(frmModal).modal('show');
+
                 } else {
                     MostrarAlertaError("Ocurrió un error.");
                 }
@@ -129,7 +140,10 @@ $(document).ready(function () {
 
         $(frmModal).on('hidden.bs.modal', function () {
             $(frmFormulario)[0].reset();
-            $(frmCodigoGenero).val(0);
+            $(frmCodigoCancion).val(0);
+            $(frmGenero).val(0);
+            $(frmNombre).val("");
+            $(frmPrecio).val("");
             $(frmImagenPreview).attr('src', '').hide();
             LimpiarSeleccionImagen(frmImagen);
             $(frmTextoModal).text(textoAgregar);
@@ -150,5 +164,8 @@ $(document).ready(function () {
             $(frmImagenPreview).attr('src', rutaImagenDefault);
         }
     });
+    
+});
 
-}); 
+
+

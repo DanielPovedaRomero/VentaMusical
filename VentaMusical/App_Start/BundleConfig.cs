@@ -31,7 +31,10 @@ namespace VentaMusical
                 "~/Js/Proyecto/globales.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/generosMusicales").Include(
-                "~/Js/Proyecto//generosMusicales.js"));
+                "~/Js/Proyecto/generosMusicales.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/canciones").Include(
+               "~/Js/Proyecto/canciones.js"));
 
         }
     }
