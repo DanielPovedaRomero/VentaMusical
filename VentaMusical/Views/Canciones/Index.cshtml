@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <table id="cancionesTable" class="table table-striped table-bordered">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th>Código Canción</th>
                 <th>Código Género</th>
                 <th>Nombre</th>
@@ -18,12 +18,21 @@
         <tbody>
             @foreach (var cancion in Model.Canciones)
             {
-                <tr>
+                <tr class="text-center">
                     <td>@cancion.CodigoCancion</td>
                     <td>@cancion.CodigoGenero</td>
                     <td>@cancion.Nombre</td>
                     <td>@cancion.Precio</td>
-                    <td><img src="@cancion.Imagen" alt="Imagen @cancion.Nombre" style="width: 50px; height: 50px;"></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(cancion.Imagen))
+                        {
+                            <img src="data:image;base64,@(cancion.Imagen)" alt="Imagen @cancion.Nombre" class="table-img">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Content/Images/DefaultAlbum.png")" alt="Imagen @cancion.Nombre" class="table-img">
+                        }
+                    </td>
                     <td>
                         <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
