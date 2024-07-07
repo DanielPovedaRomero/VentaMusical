@@ -28,10 +28,6 @@ $(document).ready(function () {
         var codigoGenero = $(frmGenero).val();
         var precio = $(frmPrecio).val();
 
-        console.log(nombre);
-        console.log(codigoGenero);
-        console.log(precio);
-
         if (!nombre || !codigoGenero || !precio ) {
             MostrarAlertaAdvertencia("Por favor, complete los campos de nombre, precio y seleccione un genero musical");
             return;
