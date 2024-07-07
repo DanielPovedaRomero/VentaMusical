@@ -173,6 +173,23 @@ $(document).ready(function () {
 
         $(this).val(valorFormateado);
     });
+
+    //[FORMATO DECIMALES]
+    $(frmPrecio).on('keyup', function () {
+        
+        var valor = $(this).val();
+
+        // Remover caracteres no permitidos (dejar solo números y un punto decimal)
+        valor = valor.replace(/[^0-9.]/g, '');
+
+        // Si hay más de un punto decimal, eliminar los extras
+        if (valor.split('.').length > 2) {
+            valor = valor.replace(/\.+$/, '');
+        }
+
+        // Asignar el valor limpio de vuelta al campo de precio
+        $(this).val(valor);
+    });
     
 });
 
