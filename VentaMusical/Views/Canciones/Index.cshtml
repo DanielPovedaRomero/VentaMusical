@@ -4,7 +4,7 @@
 }
 
 @{
-    var generosSelectList = Model.GenerosMusicales.Select(g => new SelectListItem
+    var generosSelectList =  Model.GenerosMusicales.Select(g => new SelectListItem
     {
         Value = g.CodigoGenero.ToString(),
         Text = g.Descripcion

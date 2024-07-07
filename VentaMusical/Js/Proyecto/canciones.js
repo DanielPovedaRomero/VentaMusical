@@ -28,8 +28,8 @@ $(document).ready(function () {
         var codigoGenero = $(frmGenero).val();
         var precio = $(frmPrecio).val();
 
-        if (!nombre || !codigoGenero || !precio ) {
-            MostrarAlertaAdvertencia("Por favor, complete los campos de nombre, precio y seleccione un genero musical");
+        if (!ValidarCampos(codigoGenero, nombre, precio)) {
+            MostrarAlertaAdvertencia("Por favor, complete los campos de nombre, precio y seleccione un género musical.");
             return;
         }
 
@@ -190,6 +190,11 @@ $(document).ready(function () {
         // Asignar el valor limpio de vuelta al campo de precio
         $(this).val(valor);
     });
+
+    //[VALIDAR CAMPOS]
+    function ValidarCampos(CodigoGenero, Nombre, Precio) {
+        return CodigoGenero > 0 && Nombre && Precio > 0;
+    }
     
 });
 
