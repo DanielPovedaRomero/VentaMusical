@@ -49,9 +49,18 @@ namespace VentaMusical.Controllers
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
+
+                    var generos = db.TB_GenerosMusicales.ToList();
+                    var validarDescripcion = generos.Where(x => x.Descripcion.ToUpper() == Descripcion.ToUpper()).FirstOrDefault();
+
+                    if (validarDescripcion != null)
+                    {
+                        return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.GeneroConMismaDescripcion, Resultado = false });
+                    }
+
                     if (Codigo == 0)
                     {
-                        
+
                         TB_GenerosMusicales nuevoGenero = new TB_GenerosMusicales()
                         {
                             Descripcion = Descripcion,
@@ -62,7 +71,7 @@ namespace VentaMusical.Controllers
                     }
                     else
                     {
-                   
+
                         TB_GenerosMusicales generoExistente = db.TB_GenerosMusicales.Find(Codigo);
                         if (generoExistente != null)
                         {
@@ -93,10 +102,10 @@ namespace VentaMusical.Controllers
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
-                    
+
                     var cancionesRegistradasConGenero = db.TB_Canciones.Where(x => x.CodigoGenero == codigoGenero).FirstOrDefault();
 
-                    if(cancionesRegistradasConGenero != null)
+                    if (cancionesRegistradasConGenero != null)
                     {
                         return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.ErrorEliminarGenero, Resultado = false });
                     }
@@ -146,7 +155,7 @@ namespace VentaMusical.Controllers
             catch (Exception)
             {
                 return Json(null, JsonRequestBehavior.AllowGet);
-            }         
+            }
         }
     }
 }
