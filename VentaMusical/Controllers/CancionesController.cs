@@ -39,7 +39,7 @@ namespace VentaMusical.Controllers
                         }).ToList();
                     }
 
-                   
+
 
                     if (generosMusicales.Any())
                     {
@@ -94,8 +94,18 @@ namespace VentaMusical.Controllers
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
+
                     if (CodigoCancion == 0)
                     {
+
+                        var canciones = db.TB_Canciones.ToList();
+
+                        var validarCancion = canciones.Where(x => x.Nombre.ToUpper() == Nombre.ToUpper() && x.CodigoGenero == CodigoGenero).FirstOrDefault();
+
+                        if (validarCancion != null)
+                        {
+                            return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.CancionConMismaDescripcion, Resultado = false });
+                        }
 
                         TB_Canciones nuevaCancion = new TB_Canciones()
                         {
