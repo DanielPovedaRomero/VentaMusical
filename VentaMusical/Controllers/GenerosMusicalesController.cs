@@ -93,7 +93,16 @@ namespace VentaMusical.Controllers
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
+                    
+                    var cancionesRegistradasConGenero = db.TB_Canciones.Where(x => x.CodigoGenero == codigoGenero).FirstOrDefault();
+
+                    if(cancionesRegistradasConGenero != null)
+                    {
+                        return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.ErrorEliminarGenero, Resultado = false });
+                    }
+
                     var genero = db.TB_GenerosMusicales.Find(codigoGenero);
+
                     if (genero == null)
                     {
                         return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.NoEncontrado, Resultado = false });
