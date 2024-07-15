@@ -49,17 +49,16 @@ namespace VentaMusical.Controllers
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
-
-                    var generos = db.TB_GenerosMusicales.ToList();
-                    var validarDescripcion = generos.Where(x => x.Descripcion.ToUpper() == Descripcion.ToUpper()).FirstOrDefault();
-
-                    if (validarDescripcion != null)
-                    {
-                        return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.GeneroConMismaDescripcion, Resultado = false });
-                    }
-
                     if (Codigo == 0)
                     {
+
+                        var generos = db.TB_GenerosMusicales.ToList();
+                        var validarDescripcion = generos.Where(x => x.Descripcion.ToUpper() == Descripcion.ToUpper()).FirstOrDefault();
+
+                        if (validarDescripcion != null)
+                        {
+                            return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.GeneroConMismaDescripcion, Resultado = false });
+                        }
 
                         TB_GenerosMusicales nuevoGenero = new TB_GenerosMusicales()
                         {
