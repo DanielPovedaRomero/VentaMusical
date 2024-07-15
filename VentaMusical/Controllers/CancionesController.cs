@@ -23,6 +23,7 @@ namespace VentaMusical.Controllers
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
                     var canciones = db.TB_Canciones.ToList();
+                    var generosMusicales = db.TB_GenerosMusicales.ToList();
 
                     if (canciones.Any())
                     {
@@ -33,11 +34,12 @@ namespace VentaMusical.Controllers
                             Nombre = x.Nombre,
                             Precio = x.Precio,
                             Imagen = x.Imagen,
+                            NombreGenero = !(generosMusicales.Where(y => y.CodigoGenero == x.CodigoGenero).Any()) ? "No asociado" : generosMusicales.Where(y => y.CodigoGenero == x.CodigoGenero).FirstOrDefault().Descripcion
 
                         }).ToList();
                     }
 
-                    var generosMusicales = db.TB_GenerosMusicales.ToList();
+                   
 
                     if (generosMusicales.Any())
                     {
