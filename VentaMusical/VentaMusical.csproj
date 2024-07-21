@@ -132,6 +132,7 @@
     <Compile Include="Controllers\CancionesController.cs" />
     <Compile Include="Controllers\GenerosMusicalesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VentaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,6 +187,7 @@
     <Compile Include="Models\ViewModels\CancionesViewModel.cs" />
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
+    <Compile Include="Models\ViewModels\VentaEncabezadoViewModel.cs" />
     <Compile Include="Models\ViewModels\VistaCancionesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -211,6 +213,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Proyecto\canciones.js" />
+    <Content Include="Js\Proyecto\ventas.js" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
@@ -263,6 +266,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\GenerosMusicales\Index.cshtml" />
     <Content Include="Views\Canciones\Index.cshtml" />
+    <Content Include="Views\Venta\Index.cshtml" />
+    <Content Include="Views\Venta\Factura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
