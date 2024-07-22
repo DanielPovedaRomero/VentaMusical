@@ -38,7 +38,7 @@ namespace VentaMusical.Controllers
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                return Json(ex, JsonRequestBehavior.AllowGet);
             }
 
             return View(model: listaVentas);
