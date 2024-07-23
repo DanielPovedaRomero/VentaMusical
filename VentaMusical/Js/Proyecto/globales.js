@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    $('table').DataTable({
+    $('.DtTable').DataTable({
         "paging": true,
         "lengthChange": false,
         "searching": true,
