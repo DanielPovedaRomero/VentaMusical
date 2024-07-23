@@ -39,6 +39,9 @@ namespace VentaMusical
             bundles.Add(new ScriptBundle("~/bundles/ventas").Include(
               "~/Js/Proyecto/ventas.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/factura").Include(
+            "~/Js/Proyecto/factura.js"));
+
         }
     }
 }

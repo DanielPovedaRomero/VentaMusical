@@ -47,7 +47,63 @@ namespace VentaMusical.Controllers
         // GET: Factura
         public ActionResult Factura()
         {
-           return View();
+            var model = new VistaFacturaViewModel();
+            var listaUsuarios = new List<UsuarioViewModel>();
+            var listaCanciones = new List<CancionesViewModel>();
+            var listaGenerosMusicales = new List<GenerosMusicalesViewModel>();
+
+            try
+            {
+                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                {                 
+                    var usuarios = db.TB_Usuarios.ToList();
+                    var canciones = db.TB_Canciones.ToList();
+                    var generosMusicales = db.TB_GenerosMusicales.ToList(); 
+
+                    if (usuarios.Any())
+                    {
+                        listaUsuarios = usuarios.Select(x => new UsuarioViewModel
+                        {
+                            Nombre = x.Nombre,
+                            NumeroIdentificacion = x.NumeroIdentificacion,                          
+                        }).ToList();
+                    }
+
+                    if (generosMusicales.Any())
+                    {
+                        listaGenerosMusicales = generosMusicales.Select(x => new GenerosMusicalesViewModel
+                        {
+                            CodigoGenero = x.CodigoGenero,
+                            Descripcion = x.Descripcion,
+                            Imagen = x.Imagen,
+                        }).ToList();
+                    }
+
+                    if (canciones.Any())
+                    {
+                        listaCanciones = canciones.Select(x => new CancionesViewModel
+                        {
+                            CodigoCancion = x.CodigoCancion,
+                            CodigoGenero = x.CodigoGenero,
+                            Nombre = x.Nombre,
+                            Precio = x.Precio,
+                            Imagen = x.Imagen,
+                            NombreGenero = !(generosMusicales.Where(y => y.CodigoGenero == x.CodigoGenero).Any()) ? "No asociado" : generosMusicales.Where(y => y.CodigoGenero == x.CodigoGenero).FirstOrDefault().Descripcion
+
+                        }).ToList();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+
+            model.Usuarios = listaUsuarios;
+            model.Canciones = listaCanciones;
+
+            return View(model: model);
         }
     }
 }

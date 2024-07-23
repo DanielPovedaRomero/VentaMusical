@@ -187,8 +187,10 @@
     <Compile Include="Models\ViewModels\CancionesViewModel.cs" />
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
+    <Compile Include="Models\ViewModels\UsuarioViewModel.cs" />
     <Compile Include="Models\ViewModels\VentaEncabezadoViewModel.cs" />
     <Compile Include="Models\ViewModels\VistaCancionesViewModel.cs" />
+    <Compile Include="Models\ViewModels\VistaFacturaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +215,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Js\Proyecto\canciones.js" />
+    <Content Include="Js\Proyecto\factura.js" />
     <Content Include="Js\Proyecto\ventas.js" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
