@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using VentaMusical.Models.ViewModels;
 using VentaMusical.Models;
 using System.Linq;
+using Microsoft.Ajax.Utilities;
 
 namespace VentaMusical.Controllers
 {
@@ -104,6 +105,35 @@ namespace VentaMusical.Controllers
             model.Canciones = listaCanciones;
 
             return View(model: model);
+        }
+
+        [HttpGet]
+        public ActionResult ObtenerImpuestos()
+        {
+            var listaImpuestos = new List<ImpuestosViewModel>();
+            try
+            {
+                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                {
+                    var impuestos = db.TB_Impuestos.ToList();
+
+                    if (impuestos.Any())
+                    {
+                        listaImpuestos = impuestos.Select(x => new ImpuestosViewModel
+                        {
+                            IdImpuesto = x.IdImpuesto,
+                            Descripcion = x.Descripcion,
+                            Porcentaje = x.Porcentaje,
+                        }).ToList();
+                    }
+
+                    return Json(listaImpuestos, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(listaImpuestos, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

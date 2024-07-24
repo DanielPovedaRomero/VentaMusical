@@ -7,6 +7,7 @@ let modalUsuario = '#modalUsuario';
 let tableCanciones = '#cancionTable';
 let modalCancion = '#modalCancion';
 
+let tableFactura = '#facturaTable';
 $(document).ready(function () {
 
     //SELECCIONAR USUARIO
@@ -22,32 +23,88 @@ $(document).ready(function () {
     });
 
     //SELECCIONAR FILA
+
     $(tableCanciones).on('click', '.select-cancion', function () {
         // Obtener los datos del botón seleccionado
         var codigo = $(this).data('codigo');
         var nombre = $(this).data('nombre');
         var precio = $(this).data('precio');
 
-        // Agregar una nueva fila a la tabla de la factura
-        var newRow = `<tr>
+        // Cargar impuestos en el select
+        CargarImpuestos(function (selectImpuestoHtml) {
+            // Calcular el subtotal y el impuesto
+            var subtotal = parseFloat(precio);
+            var impuestoPorcentaje = $(selectImpuestoHtml).find('option:selected').data('porcentaje') || 0;
+            var montoImpuesto = subtotal * (impuestoPorcentaje / 100);
+            var total = subtotal + montoImpuesto;
+
+            // Agregar una nueva fila a la tabla de la factura
+            var newRow = `
+                <tr class="text-center">
                     <td>${codigo}</td>
                     <td>${nombre}</td>
-                    <td><input type="number" class="form-control cantidad" value="1" min="1"></td>
+                    <td><input type="number" class="form-control form-control-sm quantity" value="1" min="1" /></td>
                     <td>${precio}</td>
-                    <td class="subtotal">${precio}</td>
+                    <td>${selectImpuestoHtml}</td>
+                    <td class="subtotal">${subtotal.toFixed(2)}</td>
+                    <td class="total">${total.toFixed(2)}</td>
                     <td>
                         <button class="btn btn-danger btn-sm remove-row">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
-                </tr>`;
+                </tr>
+            `;
 
-        $('#facturaTable tbody').append(newRow);
+            $(`${tableFactura} tbody`).append(newRow);
 
-        // Cerrar el modal
-        $(modalCancion).modal('hide');
-
+            // Cerrar el modal
+            $(modalCancion).modal('hide');
+        });
     });
-        
+
+    // Evento para actualizar el total cuando cambia la cantidad o el impuesto
+    $(document).on('input', '.quantity, .impuesto-select', function () {
+        var $row = $(this).closest('tr');
+        var quantity = parseFloat($row.find('.quantity').val());
+        var price = parseFloat($row.find('td:nth-child(4)').text());
+        var taxPercentage = parseFloat($row.find('.impuesto-select option:selected').data('porcentaje'));
+
+        var subtotal = price * quantity;
+        var taxAmount = subtotal * (taxPercentage / 100);
+        var total = subtotal + taxAmount;
+
+        $row.find('.subtotal').text(subtotal.toFixed(2));
+        $row.find('.total').text(total.toFixed(2));
+    });
+
+    // Evento para eliminar una fila
+    $(document).on('click', '.remove-row', function () {
+        $(this).closest('tr').remove();
+        // Opcional: Actualizar los totales generales después de eliminar una fila
+    });
+
+    function CargarImpuestos(callback) {
+        $.ajax({
+            url: '/Venta/ObtenerImpuestos',
+            type: 'GET',
+            success: function (response) {
+                if (response && response.length > 0) {
+                    var options = response.map(function (impuesto) {
+                        return `<option value="${impuesto.IdImpuesto}" data-porcentaje="${impuesto.Porcentaje}">${impuesto.Descripcion}</option>`;
+                    }).join('');
+
+                    var selectImpuestoHtml = `<select class="form-control form-control-sm impuesto-select">${options}</select>`;
+                    if (callback) callback(selectImpuestoHtml);
+                } else {
+                    MostrarAlertaError("Ocurrió un error al consultar impuestos.");
+                }
+            },
+            error: function () {
+                MostrarAlertaError("Ocurrió un error.");
+            }
+        });
+    }
+
 });
 

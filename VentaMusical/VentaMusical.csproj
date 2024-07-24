@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="Models\ViewModels\CancionesViewModel.cs" />
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
+    <Compile Include="Models\ViewModels\ImpuestosViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
     <Compile Include="Models\ViewModels\UsuarioViewModel.cs" />
     <Compile Include="Models\ViewModels\VentaEncabezadoViewModel.cs" />
