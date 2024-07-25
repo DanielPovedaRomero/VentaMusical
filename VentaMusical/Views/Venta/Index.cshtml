@@ -1,0 +1,51 @@
+﻿@model IEnumerable<VentaMusical.Models.ViewModels.VentaEncabezadoViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col-6">
+            <div class="add-genre-btn mt-3">
+                <a class="btn btn-primary" href="@Url.Action("Factura", "Venta")">
+                    <i class="fas fa-chart-line"></i> Ventas
+                </a>
+            </div>
+        </div>
+
+        <table id="ventasTable" class="DtTable table table-striped table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>Factura</th>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var venta in Model)
+                {
+                    <tr class="text-center">
+                        <td>@venta.NumeroFactura</td>
+                        <td>@venta.Fecha</td>
+                        <td>@venta.NumeroIdentificacion</td>
+                        <td>@venta.NombreUsuario</td>
+                        <td>@venta.Total</td>
+                        <td>
+                            <button data-id="@venta.NumeroFactura" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></button>
+                            <button data-id="@venta.NumeroFactura" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    @section Scripts {
+
+        @Scripts.Render("~/bundles/ventas")
+    }

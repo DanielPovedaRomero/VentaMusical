@@ -1,0 +1,87 @@
+﻿@model List<VentaMusical.Models.ViewModels.GenerosMusicalesViewModel>
+
+@{
+    ViewBag.Title = "Lista de Géneros Musicales";
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center mt-5">Géneros Musicales</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="add-genre-btn mt-3">
+                <button class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fas fa-solid fa-icons mx-2"></i>Nuevo Género
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        @foreach (var genero in Model)
+        {
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 mt-3">
+                <div class="d-flex justify-content-center align-items-center genre-label">
+                    <i class="fas fa-compact-disc"></i>
+                    <label class="ms-2">@genero.Descripcion</label>
+                </div>
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(genero.Imagen))
+                    {
+                        <img src="data:image;base64,@(genero.Imagen)" class="card-img-top" alt="Imagen del género musical">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/Content/Images/DefaultAlbum.png")" class="card-img-top" alt="Imagen por defecto">
+                    }
+                    <div class="card-buttons">
+                        <button data-id="@genero.CodigoGenero" class="edit"><i class="fas fa-edit"></i></button>
+                        <button data-id="@genero.CodigoGenero" class="delete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Registro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" enctype="multipart/form-data">
+                    <input type="hidden" id="CodigoGenero" name="CodigoGenero" value="0">
+                    <div class="mb-3">
+                        <label for="Descripcion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="Descripcion" name="Descripcion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Imagen" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="Imagen" name="Imagen" accept="image/*">
+                        <div class="image-container mt-2">
+                            <img id="ImagenPreview" src="@Url.Content("~/Content/Images/DefaultAlbum.png")" alt="Previsualización de la Imagen">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/generosMusicales")
+}

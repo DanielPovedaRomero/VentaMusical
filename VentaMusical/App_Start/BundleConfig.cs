@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace VentaMusical
 {
@@ -25,6 +24,24 @@ namespace VentaMusical
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Js creados en el proyecto
+
+            bundles.Add(new ScriptBundle("~/bundles/globales").Include(
+                "~/Js/Proyecto/globales.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/generosMusicales").Include(
+                "~/Js/Proyecto/generosMusicales.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/canciones").Include(
+               "~/Js/Proyecto/canciones.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/ventas").Include(
+              "~/Js/Proyecto/ventas.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/factura").Include(
+            "~/Js/Proyecto/factura.js"));
+
         }
     }
 }

@@ -1,0 +1,108 @@
+﻿@model VentaMusical.Models.ViewModels.VistaCancionesViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    var generosSelectList =  Model.GenerosMusicales.Select(g => new SelectListItem
+    {
+        Value = g.CodigoGenero.ToString(),
+        Text = g.Descripcion
+    }).ToList();
+}
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col-6">
+            <div class="add-genre-btn mt-3">
+                <button class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fas fa-solid fa-music mx-2"></i>Nueva Canción
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="cancionesTable" class="DtTable table table-striped table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>Código Canción</th>
+                <th>Género</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cancion in Model.Canciones)
+            {
+                <tr class="text-center">
+                    <td>@cancion.CodigoCancion</td>
+                    <td>@cancion.NombreGenero</td>
+                    <td>@cancion.Nombre</td>
+                    <td>@cancion.Precio</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(cancion.Imagen))
+                        {
+                            <img src="data:image;base64,@(cancion.Imagen)" alt="Imagen @cancion.Nombre" class="table-img">
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/Content/Images/DefaultAlbum.png")" alt="Imagen @cancion.Nombre" class="table-img">
+                        }
+                    </td>
+                    <td>
+                        <button data-id="@cancion.CodigoCancion" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></button>
+                        <button data-id="@cancion.CodigoCancion" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Registro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" enctype="multipart/form-data">
+                    <input type="hidden" id="CodigoCancion" name="CodigoCancion" value="0">
+                    <div class="mb-3">
+                        <label for="Nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Precio" class="form-label">Precio</label>
+                        <input type="text" class="form-control" placeholder="0.00" id="Precio" name="Precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="genero" class="form-label">Género Musical</label>
+                        @Html.DropDownList("CodigoGenero", generosSelectList, new { @class = "form-control", @id = "Genero" })
+                    </div>
+                    <div class="mb-3">
+                        <label for="Imagen" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="Imagen" name="Imagen" accept="image/*">
+                        <div class="image-container mt-2">
+                            <img id="ImagenPreview" src="@Url.Content("~/Content/Images/DefaultAlbum.png")" alt="Previsualización de la Imagen">
+                        </div>
+                    </div>
+                </form> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/canciones")
+}
