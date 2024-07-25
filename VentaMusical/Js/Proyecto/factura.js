@@ -23,7 +23,6 @@ $(document).ready(function () {
     });
 
     //SELECCIONAR FILA
-
     $(tableCanciones).on('click', '.select-cancion', function () {
         // Obtener los datos del botón seleccionado
         var codigo = $(this).data('codigo');
@@ -58,6 +57,9 @@ $(document).ready(function () {
 
             $(`${tableFactura} tbody`).append(newRow);
 
+            // Actualizar los totales
+            CalcularTotales();
+
             // Cerrar el modal
             $(modalCancion).modal('hide');
         });
@@ -76,12 +78,14 @@ $(document).ready(function () {
 
         $row.find('.subtotal').text(subtotal.toFixed(2));
         $row.find('.total').text(total.toFixed(2));
+
+        CalcularTotales();
     });
 
     // Evento para eliminar una fila
     $(document).on('click', '.remove-row', function () {
         $(this).closest('tr').remove();
-        // Opcional: Actualizar los totales generales después de eliminar una fila
+        CalcularTotales();
     });
 
     function CargarImpuestos(callback) {
@@ -91,7 +95,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response && response.length > 0) {
                     var options = response.map(function (impuesto) {
-                        return `<option value="${impuesto.IdImpuesto}" data-porcentaje="${impuesto.Porcentaje}">${impuesto.Descripcion}</option>`;
+                        return `<option value="${impuesto.IdImpuesto}" data-porcentaje="${impuesto.Porcentaje}">${impuesto.Descripcion} ${impuesto.Porcentaje}%</option>`;
                     }).join('');
 
                     var selectImpuestoHtml = `<select class="form-control form-control-sm impuesto-select">${options}</select>`;
@@ -104,6 +108,37 @@ $(document).ready(function () {
                 MostrarAlertaError("Ocurrió un error.");
             }
         });
+    }
+
+    function CalcularTotales() {
+
+        let subtotal = 0;
+        let total = 0;
+
+        // Recorremos cada fila de la tabla
+        $('#facturaTable tbody tr').each(function () {
+            // Obtenemos los valores de las celdas
+            let cantidad = parseFloat($(this).find('input.quantity').val()) || 0;
+            let precioUnitario = parseFloat($(this).find('td:eq(3)').text()) || 0;
+            let impuestoPorcentaje = $(this).find('select option:selected').data('porcentaje') || 0;
+
+            // Calculamos el subtotal y el total
+            let filaSubtotal = cantidad * precioUnitario;
+            let filaImpuesto = filaSubtotal * (impuestoPorcentaje / 100);
+            let filaTotal = filaSubtotal + filaImpuesto;
+
+            // Sumamos al subtotal y total generales
+            subtotal += filaSubtotal;
+            total += filaTotal;
+
+            // Actualizamos los valores en las celdas correspondientes
+            $(this).find('.subtotal').text(filaSubtotal.toFixed(2));
+            $(this).find('.total').text(filaTotal.toFixed(2));
+        });
+
+        // Actualizamos los valores del totalizador
+        $('#subtotal').text(subtotal.toFixed(2));
+        $('#total').text(total.toFixed(2));
     }
 
 });

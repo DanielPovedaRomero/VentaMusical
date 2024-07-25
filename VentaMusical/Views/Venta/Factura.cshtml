@@ -6,10 +6,10 @@
 
 <div class="container mt-5">
 
-    <div class="form-group row">
-        <div class="col-5">
+    <div class="form-group row align-items-center">
+        <div class="col-md-4">
             <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="0">
-            <label for="nombreUsuario" class="col-form-label">Usuario:</label>
+            <label for="NombreUsuario" class="col-form-label">Usuario:</label>
             <div class="input-group mb-2">
                 <input type="text" readonly class="form-control" id="NombreUsuario">
                 <div class="input-group-append">
@@ -21,16 +21,11 @@
         </div>
     </div>
 
-    <div class="form-group row">
-        <div class="col-5">
-            <div class="input-group-append">
-                <button class="btn btn-success" type="button" id="btnAgregarLinea" data-bs-toggle="modal" data-bs-target="#modalCancion">
-                    <i class="fas fa-user-plus"></i>
-                </button>
-            </div>
-        </div>
+    <div class="col-md-12 d-flex justify-content-end mb-2 mt-4">
+        <button class="btn btn-primary" type="button" id="btnAgregarLinea" data-bs-toggle="modal" data-bs-target="#modalCancion">
+            <i class="fas fa-plus-circle"></i> Agregar Canción
+        </button>
     </div>
-
 
     <table class="table table-bordered table-striped table-hover" id="facturaTable">
         <thead>
@@ -46,9 +41,33 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Las filas de la tabla se agregarán aquí dinámicamente -->
         </tbody>
     </table>
+
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="text-right"><strong>Subtotal:</strong></td>
+                        <td id="subtotal" class="text-right">0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><strong>Total:</strong></td>
+                        <td id="total" class="text-right">0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-12 d-flex justify-content-end mb-2">
+        <button class="btn btn-success" type="button" id="btnFinalizarCompra">
+            <i class="fas fa-check-circle"></i> Finalizar Compra
+        </button>
+    </div>
+
 </div>
 
 <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
