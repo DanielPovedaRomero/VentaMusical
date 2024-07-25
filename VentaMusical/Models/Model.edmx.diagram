@@ -15,16 +15,19 @@
         <EntityTypeShape EntityType="VentaMusicalDBModel.TB_TipoTarjetas" Width="1.5" PointX="3.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="VentaMusicalDBModel.TB_Usuarios" Width="1.5" PointX="6" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaEncabezado" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaLinea" Width="1.5" PointX="10.5" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__3E52440B" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdGen__31EC6D26" ManuallyRouted="false" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__3F466844" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Permis__IdMod__2D27B809" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Permis__IdMod__2C3393D0" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdPer__30F848ED" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Usuari__IdPer__300424B4" ManuallyRouted="false" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaE__Numer__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Porce__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Cancio__Image__48CFD27E" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_FormasDePago" Width="1.5" PointX="10.375" PointY="0.875" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__693CA210" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaLinea" Width="1.5" PointX="10.5" PointY="3.75" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__6D0D32F4" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6E01572D" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6C190EBB" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

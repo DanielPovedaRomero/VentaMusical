@@ -154,6 +154,9 @@
     <Compile Include="Models\TB_Canciones.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_FormasDePago.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_Generos.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

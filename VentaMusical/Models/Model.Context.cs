@@ -35,6 +35,7 @@ namespace VentaMusical.Models
         public virtual DbSet<TB_TipoTarjetas> TB_TipoTarjetas { get; set; }
         public virtual DbSet<TB_Usuarios> TB_Usuarios { get; set; }
         public virtual DbSet<TB_VentaEncabezado> TB_VentaEncabezado { get; set; }
+        public virtual DbSet<TB_FormasDePago> TB_FormasDePago { get; set; }
         public virtual DbSet<TB_VentaLinea> TB_VentaLinea { get; set; }
     }
 }

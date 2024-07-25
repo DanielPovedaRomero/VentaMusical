@@ -12,22 +12,18 @@ namespace VentaMusical.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_Canciones
+    public partial class TB_FormasDePago
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TB_Canciones()
+        public TB_FormasDePago()
         {
-            this.TB_VentaLinea = new HashSet<TB_VentaLinea>();
+            this.TB_VentaEncabezado = new HashSet<TB_VentaEncabezado>();
         }
     
-        public int CodigoCancion { get; set; }
-        public int CodigoGenero { get; set; }
-        public string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public string Imagen { get; set; }
+        public int IdFormaPago { get; set; }
+        public string Descripcion { get; set; }
     
-        public virtual TB_GenerosMusicales TB_GenerosMusicales { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TB_VentaLinea> TB_VentaLinea { get; set; }
+        public virtual ICollection<TB_VentaEncabezado> TB_VentaEncabezado { get; set; }
     }
 }

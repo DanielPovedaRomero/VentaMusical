@@ -14,8 +14,17 @@ namespace VentaMusical.Models
     
     public partial class TB_GenerosMusicales
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TB_GenerosMusicales()
+        {
+            this.TB_Canciones = new HashSet<TB_Canciones>();
+        }
+    
         public int CodigoGenero { get; set; }
         public string Descripcion { get; set; }
         public string Imagen { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TB_Canciones> TB_Canciones { get; set; }
     }
 }

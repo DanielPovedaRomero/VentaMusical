@@ -25,8 +25,10 @@ namespace VentaMusical.Models
         public decimal Subtotal { get; set; }
         public decimal Total { get; set; }
         public string NumeroIdentificacion { get; set; }
+        public int IdFormaPago { get; set; }
     
         public virtual TB_Usuarios TB_Usuarios { get; set; }
+        public virtual TB_FormasDePago TB_FormasDePago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TB_VentaLinea> TB_VentaLinea { get; set; }
     }
