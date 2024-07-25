@@ -188,6 +188,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\CancionesViewModel.cs" />
+    <Compile Include="Models\ViewModels\FormasDePagoViewModel.cs" />
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
     <Compile Include="Models\ViewModels\ImpuestosViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />

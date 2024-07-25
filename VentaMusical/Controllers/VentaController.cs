@@ -51,6 +51,7 @@ namespace VentaMusical.Controllers
             var listaUsuarios = new List<UsuarioViewModel>();
             var listaCanciones = new List<CancionesViewModel>();
             var listaGenerosMusicales = new List<GenerosMusicalesViewModel>();
+            var listaFormasDePago = new List<FormasDePagoViewModel>();
 
             try
             {
@@ -58,7 +59,8 @@ namespace VentaMusical.Controllers
                 {                 
                     var usuarios = db.TB_Usuarios.ToList();
                     var canciones = db.TB_Canciones.ToList();
-                    var generosMusicales = db.TB_GenerosMusicales.ToList(); 
+                    var generosMusicales = db.TB_GenerosMusicales.ToList();
+                    var formasDePago = db.TB_FormasDePago.ToList();
 
                     if (usuarios.Any())
                     {
@@ -93,6 +95,15 @@ namespace VentaMusical.Controllers
                         }).ToList();
                     }
 
+                    if (formasDePago.Any())
+                    {
+                        listaFormasDePago = formasDePago.Select(x => new FormasDePagoViewModel
+                        {
+                            IdFormaPago = x.IdFormaPago,
+                            Descripcion = x.Descripcion,
+                        }).ToList();
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -102,6 +113,7 @@ namespace VentaMusical.Controllers
 
             model.Usuarios = listaUsuarios;
             model.Canciones = listaCanciones;
+            model.FormasDePago = listaFormasDePago;
 
             return View(model: model);
         }

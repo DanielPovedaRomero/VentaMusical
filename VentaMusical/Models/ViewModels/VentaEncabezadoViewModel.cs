@@ -9,7 +9,7 @@ namespace VentaMusical.Models.ViewModels
         public decimal Subtotal { get; set; }
         public decimal Total { get; set; }
         public string NumeroIdentificacion { get; set; }
-
         public string NombreUsuario { get; set; }
+        public int IdFormaPago { get; set; }
     }
 }
