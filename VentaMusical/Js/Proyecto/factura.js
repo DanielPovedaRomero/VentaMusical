@@ -8,6 +8,12 @@ let tableCanciones = '#cancionTable';
 let modalCancion = '#modalCancion';
 
 let tableFactura = '#facturaTable';
+let subTotal = '#subtotal';
+let total = '#total';
+let formaPago = '#selectFormasDePago';
+
+let btnGuardar = '#btnGuardar';
+
 $(document).ready(function () {
 
     //SELECCIONAR USUARIO
@@ -140,6 +146,44 @@ $(document).ready(function () {
         $('#subtotal').text(subtotal.toFixed(2));
         $('#total').text(total.toFixed(2));
     }
+
+    $(btnGuardar).on('click', function (e) {
+        e.preventDefault();
+
+        //ENCABEZADO
+        var v_usuario = $(codigoUsuarioTxt).val();
+        var v_formaPago = $(formaPago).val();
+        var v_subTotal = $(subTotal).text();
+        var v_total = $(total).text();
+
+        var encabezado = {          
+            Fecha: new Date(), 
+            Subtotal: v_subTotal,
+            Total: v_subTotal,
+            NumeroIdentificacion: v_usuario,          
+            IdFormaPago: v_formaPago
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Venta/InsertarFactura",
+            data: JSON.stringify(encabezado),
+            contentType: "application/json",
+            success: function (response) {
+
+                //if (response.Resultado) {
+                   
+                //} else {
+                   
+                //}
+            },
+            error: function (xhr, status, error) {
+                MostrarAlertaError("Ocurrió un error.");
+            }
+        });
+
+    });
+
 
 });
 

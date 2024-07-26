@@ -146,5 +146,12 @@ namespace VentaMusical.Controllers
                 return Json(listaImpuestos, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult InsertarFactura(VentaEncabezadoViewModel encabezado)
+        {
+
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
     }
 }
