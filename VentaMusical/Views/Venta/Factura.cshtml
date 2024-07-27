@@ -78,22 +78,21 @@
                             <td> @(item.CodigoCancion)</td>
                             <td><input type="number" class="form-control form-control-sm quantity" value="@(item.Cantidad)" min="1" /></td>
                             <td> @(item.Precio)</td>
-                            <td>
+                            <td>                              
+                                <select name="impuestoSelect"
+                                        id="impuestoSelect"
+                                        class="form-control impuesto-select">
 
-                                @{ 
-                                    var impuestos = Model.Impuestos.Select(g => new SelectListItem
+                                    @foreach (var impuesto in Model.Impuestos)
                                     {
-                                        Value = g.IdImpuesto.ToString(),
-                                        Text = $"{g.Descripcion} {(int)g.Porcentaje}%",
-                                        Selected = g.IdImpuesto == item.IdImpuesto
-                                    }).ToList();
-                                }
+                                        <option value="@impuesto.IdImpuesto"
+                                                @(impuesto.IdImpuesto == item.IdImpuesto ? "selected" : "")
+                                                data-porcentaje="@impuesto.Porcentaje">
+                                                @($"{impuesto.Descripcion} {(int)impuesto.Porcentaje}%")
+                                        </option>
+                                    }
 
-                                @Html.DropDownListFor(
-                                    model => item.IdImpuesto, 
-                                    impuestos,
-                                    new { @class = "form-control", @id = $"selectImpuestos_{item.CodigoCancion}" } 
-                                )
+                                </select>
                             </td>
                             <td class="subtotal"> @(item.SubTotal)</td>
                             <td class="total"> @(item.Total)</td>

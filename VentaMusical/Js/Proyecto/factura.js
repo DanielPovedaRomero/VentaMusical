@@ -74,11 +74,13 @@ $(document).ready(function () {
 
     // Evento para actualizar el total cuando cambia la cantidad o el impuesto
     $(document).on('input', '.quantity, .impuesto-select', function () {
+
+        console.log('Hola');
+
         var $row = $(this).closest('tr');
         var quantity = parseFloat($row.find('.quantity').val());
         var price = parseFloat($row.find('td:nth-child(4)').text());
         var taxPercentage = parseFloat($row.find('.impuesto-select option:selected').data('porcentaje'));
-
         var subtotal = price * quantity;
         var taxAmount = subtotal * (taxPercentage / 100);
         var total = subtotal + taxAmount;
