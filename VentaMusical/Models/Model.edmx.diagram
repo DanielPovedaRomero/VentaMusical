@@ -22,12 +22,12 @@
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_Cancio__Image__48CFD27E" />
         <EntityTypeShape EntityType="VentaMusicalDBModel.TB_FormasDePago" Width="1.5" PointX="10.375" PointY="0.875" />
         <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaEncabezado" Width="1.5" PointX="12.625" PointY="2.5" />
-        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaLinea" Width="1.5" PointX="14.875" PointY="3.5" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__17036CC0" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__1332DBDC" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__17F790F9" />
         <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__123EB7A3" />
-        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Total__160F4887" />
+        <EntityTypeShape EntityType="VentaMusicalDBModel.TB_VentaLinea" Width="1.5" PointX="14.875" PointY="3.5" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__32AB8735" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__339FAB6E" />
+        <AssociationConnector Association="VentaMusicalDBModel.FK__TB_VentaL__Numer__31B762FC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

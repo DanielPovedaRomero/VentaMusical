@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
+using VentaMusical.Constantes;
 using VentaMusical.Models;
 using VentaMusical.Models.ViewModels;
 
@@ -20,7 +22,7 @@ namespace VentaMusical.Controllers
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
                 {
                     var ventas = db.TB_VentaEncabezado.ToList();
-                    var usuarios = db.TB_Usuarios.ToList(); 
+                    var usuarios = db.TB_Usuarios.ToList();
 
                     if (ventas.Any())
                     {
@@ -56,7 +58,7 @@ namespace VentaMusical.Controllers
             try
             {
                 using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
-                {                 
+                {
                     var usuarios = db.TB_Usuarios.ToList();
                     var canciones = db.TB_Canciones.ToList();
                     var generosMusicales = db.TB_GenerosMusicales.ToList();
@@ -67,7 +69,7 @@ namespace VentaMusical.Controllers
                         listaUsuarios = usuarios.Select(x => new UsuarioViewModel
                         {
                             Nombre = x.Nombre,
-                            NumeroIdentificacion = x.NumeroIdentificacion,                          
+                            NumeroIdentificacion = x.NumeroIdentificacion,
                         }).ToList();
                     }
 
@@ -150,8 +152,77 @@ namespace VentaMusical.Controllers
         [HttpPost]
         public ActionResult InsertarFactura(VentaEncabezadoViewModel encabezado, List<VentaLineaViewModel> lineas)
         {
+            try
+            {
+                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                {
 
-            return Json("ok", JsonRequestBehavior.AllowGet);
+                    if (encabezado.NumeroFactura == 0)
+                    {
+                        // Crear el encabezado
+                        TB_VentaEncabezado encabezadoDB = new TB_VentaEncabezado()
+                        {
+                            Fecha = encabezado.Fecha,
+                            Subtotal = encabezado.Subtotal,
+                            Total = encabezado.Total,
+                            NumeroIdentificacion = encabezado.NumeroIdentificacion,
+                            IdFormaPago = encabezado.IdFormaPago
+                        };
+
+                        db.TB_VentaEncabezado.Add(encabezadoDB);
+                        db.SaveChanges();
+
+                        // Obtener el ID del encabezado recién insertado
+                        int numeroFactura = encabezadoDB.NumeroFactura;
+
+                        // Crear las líneas y asociarlas con el encabezado
+                        foreach (var linea in lineas)
+                        {
+                            TB_VentaLinea lineaDB = new TB_VentaLinea()
+                            {
+                                CodigoCancion = linea.CodigoCancion,
+                                Cantidad = linea.Cantidad,
+                                Precio = linea.Precio,
+                                IdImpuesto = linea.IdImpuesto,
+                                Subtotal = linea.SubTotal,
+                                Total = linea.Total,
+                                NumeroFactura = numeroFactura 
+                            };
+
+                            db.TB_VentaLinea.Add(lineaDB);
+                        }
+
+                        // Guardar todas las líneas en una sola operación
+                        db.SaveChanges();
+
+
+
+                    }
+                    else
+                    {
+
+                        //TB_Canciones cancionExistente = db.TB_Canciones.Find(CodigoCancion);
+                        //if (cancionExistente != null)
+                        //{
+                        //    cancionExistente.Nombre = Nombre;
+                        //    cancionExistente.Precio = Precio;
+                        //    cancionExistente.CodigoGenero = CodigoGenero;
+                        //    cancionExistente.Imagen = Imagen;
+                        //}
+                        //else
+                        //{
+                        //    return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.NoEncontrado, Resultado = false });
+                        //}
+                    }
+
+                }
+
+                return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
+            }
         }
     }
 }

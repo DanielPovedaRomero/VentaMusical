@@ -176,13 +176,13 @@ $(document).ready(function () {
             url: "/Venta/InsertarFactura",
             data: JSON.stringify(venta),
             contentType: "application/json",
-            success: function (response) {
-
-                //if (response.Resultado) {
-                   
-                //} else {
-                   
-                //}
+            success: function (response)
+            {
+                if (response.Resultado) {
+                    MostrarAlertaExitosa(response.Mensaje);    
+                } else {
+                    MostrarAlertaError(response.Mensaje);
+                }
             },
             error: function (xhr, status, error) {
                 MostrarAlertaError("Ocurrió un error.");

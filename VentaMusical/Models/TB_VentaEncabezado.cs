@@ -14,6 +14,12 @@ namespace VentaMusical.Models
     
     public partial class TB_VentaEncabezado
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TB_VentaEncabezado()
+        {
+            this.TB_VentaLinea = new HashSet<TB_VentaLinea>();
+        }
+    
         public int NumeroFactura { get; set; }
         public System.DateTime Fecha { get; set; }
         public decimal Subtotal { get; set; }
@@ -23,6 +29,7 @@ namespace VentaMusical.Models
     
         public virtual TB_FormasDePago TB_FormasDePago { get; set; }
         public virtual TB_Usuarios TB_Usuarios { get; set; }
-        public virtual TB_VentaLinea TB_VentaLinea { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TB_VentaLinea> TB_VentaLinea { get; set; }
     }
 }
