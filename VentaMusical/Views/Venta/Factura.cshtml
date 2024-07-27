@@ -12,17 +12,18 @@
         Selected = g.IdFormaPago == (Model.Encabezado == null ? 0 : Model.Encabezado.IdFormaPago)
 
     }).ToList();
+  
 }
 
 <div class="container mt-5">
     <div class="form-group row align-items-center">
         <div class="col-md-4">
-            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="0">
+            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="@(Model.Encabezado == null ? "" : Model.Encabezado.NumeroIdentificacion)">
             <label for="NombreUsuario" class="col-form-label">
                 <i class="fas fa-user"></i> Usuario:
             </label>
             <div class="input-group mb-2">
-                <input type="text" readonly class="form-control" id="NombreUsuario">
+                <input type="text" readonly class="form-control" id="NombreUsuario" value="@(Model.Encabezado == null ? "" : Model.Encabezado.NombreUsuario)">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="button" id="btnAgregarUsuario" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                         <i class="fas fa-user-plus"></i>
@@ -61,7 +62,41 @@
             </tr>
         </thead>
         <tbody>
-        </tbody>
+            @if (Model.Lineas != null)
+            {
+                if (Model.Lineas.Any())
+                {
+                    foreach (var item in Model.Lineas)
+                    {
+                        <tr class="text-center">
+                            <td class='d-none'> @(item.CodigoCancion)</td>
+                            <td> @(item.CodigoCancion)</td>
+                            <td><input type="number" class="form-control form-control-sm quantity" value="@(item.Cantidad)" min="1" /></td>
+                            <td> @(item.Precio)</td>
+                            <td>
+                                @Html.DropDownList(
+                                 "impuestos", 
+                                 Model.Impuestos.Select(g => new SelectListItem
+                                 {
+                                     Value = g.IdImpuesto.ToString(), 
+                                     Text = $"{g.Descripcion} {(int)g.Porcentaje}%", 
+                                     Selected = item.IdImpuesto == g.IdImpuesto 
+                                 }).ToList(), 
+                                 new { @class = "form-control", @id = "selectImpuestos" } 
+                                )
+                            </td>
+                            <td class="subtotal"> @(item.SubTotal)</td>
+                            <td class="total"> @(item.Total)</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm remove-row">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            </tbody>
     </table>
 
     <div class="row">
@@ -71,11 +106,15 @@
                 <tbody>
                     <tr>
                         <td class="text-right"><strong>Subtotal:</strong></td>
-                        <td id="subtotal" class="text-right">0.00</td>
+                        <td id="subtotal" class="text-right">
+                            @(Model.Encabezado == null ? "0.00" : Model.Encabezado.Subtotal.ToString("F2"))
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right"><strong>Total:</strong></td>
-                        <td id="total" class="text-right">0.00</td>
+                        <td id="total" class="text-right">
+                            @(Model.Encabezado == null ? "0.00" : Model.Encabezado.Total.ToString("F2"))
+                        </td>
                     </tr>
                 </tbody>
             </table>

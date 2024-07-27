@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using VentaMusical.Constantes;
 using VentaMusical.Models;
@@ -48,13 +47,14 @@ namespace VentaMusical.Controllers
         }
 
         // GET: Factura
-        public ActionResult Factura(int id)
+        public ActionResult Factura(int? id = 0)
         {
             var model = new VistaFacturaViewModel();
             var listaUsuarios = new List<UsuarioViewModel>();
             var listaCanciones = new List<CancionesViewModel>();
             var listaGenerosMusicales = new List<GenerosMusicalesViewModel>();
             var listaFormasDePago = new List<FormasDePagoViewModel>();
+            var listaImpuestos = new List<ImpuestosViewModel>();
 
             try
             {
@@ -107,6 +107,17 @@ namespace VentaMusical.Controllers
                         }).ToList();
                     }
 
+                    var impuestos = db.TB_Impuestos.ToList();
+
+                    if (impuestos.Any())
+                    {
+                        listaImpuestos = impuestos.Select(x => new ImpuestosViewModel
+                        {
+                            IdImpuesto = x.IdImpuesto,
+                            Descripcion = x.Descripcion,
+                            Porcentaje = x.Porcentaje,
+                        }).ToList();
+                    }
                 }
             }
             catch (Exception ex)
@@ -117,9 +128,16 @@ namespace VentaMusical.Controllers
             model.Usuarios = listaUsuarios;
             model.Canciones = listaCanciones;
             model.FormasDePago = listaFormasDePago;
-            var resultado = DevolverEntidadaFactura(id);
-            model.Encabezado = resultado.Item1;
-            model.Lineas = resultado.Item2;
+            model.Impuestos = listaImpuestos;
+
+            if (id != 0)
+            {
+                var resultado = DevolverEntidadaFactura(id, listaUsuarios);
+                model.Encabezado = resultado.Item1;
+                model.Lineas = resultado.Item2;
+            }
+
+        
 
             return View(model: model);
         }
@@ -233,21 +251,23 @@ namespace VentaMusical.Controllers
             }           
         }
 
-        public Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>> DevolverEntidadaFactura(int? id)
+        public Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>> DevolverEntidadaFactura(int? id, List<UsuarioViewModel> usuarios)
         {
+            if (!id.HasValue || id.Value == 0)
+            {
+                return new Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>>(null, null);
+            }
 
-            if(id == 0 || id is null) { return new Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>>(null, null); }
-
-            using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+            using (var db = new VentaMusicalDBEntities())
             {
                 // Obtén el encabezado de la factura
                 var encabezado = db.TB_VentaEncabezado
-                    .Where(f => f.NumeroFactura == id)
+                    .Where(f => f.NumeroFactura == id.Value)
                     .Select(f => new VentaEncabezadoViewModel
                     {
                         NumeroFactura = f.NumeroFactura,
                         Fecha = f.Fecha,
-                        NumeroIdentificacion = f.NumeroIdentificacion,
+                        NumeroIdentificacion = f.NumeroIdentificacion,                        
                         IdFormaPago = f.IdFormaPago,
                         Subtotal = f.Subtotal,
                         Total = f.Total,
@@ -259,9 +279,11 @@ namespace VentaMusical.Controllers
                     return new Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>>(null, null);
                 }
 
+                encabezado.NombreUsuario = !(usuarios.Where(y => y.NumeroIdentificacion == encabezado.NumeroIdentificacion).Any()) ? "No asociado" : usuarios.Where(y => y.NumeroIdentificacion == encabezado.NumeroIdentificacion).FirstOrDefault().Nombre;
+
                 // Obtén las líneas de la factura
                 var lineas = db.TB_VentaLinea
-                    .Where(l => l.NumeroFactura == id)
+                    .Where(l => l.NumeroFactura == id.Value)
                     .Select(l => new VentaLineaViewModel
                     {
                         Linea = l.Linea,
@@ -274,10 +296,9 @@ namespace VentaMusical.Controllers
                         IdImpuesto = l.IdImpuesto
                     })
                     .ToList();
-             
+
                 return new Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>>(encabezado, lineas);
             }
         }
-
     }
 }
