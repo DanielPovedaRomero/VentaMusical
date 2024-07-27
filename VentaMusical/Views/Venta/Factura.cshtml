@@ -17,7 +17,7 @@
         <div class="col-md-4">
             <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="0">
             <label for="NombreUsuario" class="col-form-label">
-                <i class="fas fa-user"></i> Usuario:               
+                <i class="fas fa-user"></i> Usuario:
             </label>
             <div class="input-group mb-2">
                 <input type="text" readonly class="form-control" id="NombreUsuario">
@@ -89,15 +89,13 @@
 </div>
 
 <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Seleccionar Usuario</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
                 <table id="usuarioTable" class="DtTable table table-striped table-bordered">
                     <thead>
                         <tr class="text-center">
@@ -113,7 +111,7 @@
                                 <td>@usuario.NumeroIdentificacion</td>
                                 <td>@usuario.Nombre</td>
                                 <td>
-                                    <button  class="btn btn-success btn-sm select-user" data-id="@usuario.NumeroIdentificacion" data-nombre="@usuario.Nombre">
+                                    <button class="btn btn-success btn-sm select-user" data-id="@usuario.NumeroIdentificacion" data-nombre="@usuario.Nombre">
                                         <i class="fas fa-hand-pointer"></i>
                                     </button>
                                 </td>
@@ -126,45 +124,51 @@
     </div>
 </div>
 
+
 <div class="modal fade" id="modalCancion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Agregar la clase modal-lg para un modal más ancho -->
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Seleccionar Canción</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
-                <table id="cancionTable" class="DtTable table table-striped table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Seleccionar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var cancion in Model.Canciones)
-                        {
+                <div class="table-responsive">
+                    <!-- Añadir una clase para hacer la tabla responsiva -->
+                    <table id="cancionTable" class="DtTable table table-striped table-bordered">
+                        <thead>
                             <tr class="text-center">
-                                <td>@cancion.CodigoCancion</td>
-                                <td>@cancion.Nombre</td>
-                                <td>@cancion.Precio</td>
-                                <td>
-                                    <button id="btnSeleccionarLinea" class="btn btn-success btn-sm select-cancion" data-codigo="@cancion.CodigoCancion" data-nombre="@cancion.Nombre" data-precio="@cancion.Precio">
-                                        <i class="fas fa-hand-pointer"></i>
-                                    </button>
-                                </td>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Genero</th>
+                                <th>Precio</th>
+                                <th>Seleccionar</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var cancion in Model.Canciones)
+                            {
+                                <tr class="text-center">
+                                    <td>@cancion.CodigoCancion</td>
+                                    <td>@cancion.Nombre</td>
+                                    <td>@cancion.NombreGenero</td>
+                                    <td>@cancion.Precio</td>
+                                    <td>
+                                        <button id="btnSeleccionarLinea" class="btn btn-success btn-sm select-cancion" data-codigo="@cancion.CodigoCancion" data-nombre="@cancion.Nombre" data-precio="@cancion.Precio">
+                                            <i class="fas fa-hand-pointer"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
 
