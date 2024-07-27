@@ -194,6 +194,7 @@
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
     <Compile Include="Models\ViewModels\UsuarioViewModel.cs" />
     <Compile Include="Models\ViewModels\VentaEncabezadoViewModel.cs" />
+    <Compile Include="Models\ViewModels\VentaLineaViewModel.cs" />
     <Compile Include="Models\ViewModels\VistaCancionesViewModel.cs" />
     <Compile Include="Models\ViewModels\VistaFacturaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

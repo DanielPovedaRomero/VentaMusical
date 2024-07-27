@@ -148,7 +148,7 @@ namespace VentaMusical.Controllers
         }
 
         [HttpPost]
-        public ActionResult InsertarFactura(VentaEncabezadoViewModel encabezado)
+        public ActionResult InsertarFactura(VentaEncabezadoViewModel encabezado, List<VentaLineaViewModel> lineas)
         {
 
             return Json("ok", JsonRequestBehavior.AllowGet);

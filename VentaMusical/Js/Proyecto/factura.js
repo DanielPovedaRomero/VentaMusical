@@ -159,15 +159,22 @@ $(document).ready(function () {
         var encabezado = {          
             Fecha: new Date(), 
             Subtotal: v_subTotal,
-            Total: v_subTotal,
+            Total: v_total,
             NumeroIdentificacion: v_usuario,          
             IdFormaPago: v_formaPago
+        };
+
+        var lineas = ObtenerLineas();
+
+        var venta = {
+            Encabezado: encabezado,
+            Lineas: lineas
         };
 
         $.ajax({
             type: "POST",
             url: "/Venta/InsertarFactura",
-            data: JSON.stringify(encabezado),
+            data: JSON.stringify(venta),
             contentType: "application/json",
             success: function (response) {
 
@@ -183,6 +190,37 @@ $(document).ready(function () {
         });
 
     });
+
+    function LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total) {
+        this.NumeroFactura = numeroFactura;
+        this.CodigoCancion = codigoCancion,
+        this.Linea = 1;
+        this.Cantidad = cantidad;
+        this.Precio = precio;
+        this.IdImpuesto = impuesto;
+        this.Subtotal = subtotal;
+        this.Total = total;
+    }
+
+    function ObtenerLineas() {
+        var lineas = [];
+
+        $('#facturaTable tbody tr').each(function () {
+            var numeroFactura = 0;
+            var codigoCancion = $(this).find('td').eq(0).text();
+            var cantidad = $(this).find('.quantity').val();
+            var precio = $(this).find('td').eq(3).text();
+            var impuesto = $(this).find('td').eq(4).find('select').val(); 
+            var subtotal = $(this).find('td').eq(5).text();
+            var total = $(this).find('td').eq(6).text();
+
+            // Crear una nueva instancia de la entidad y agregarla a la lista
+            var linea = new LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total);
+            lineas.push(linea);
+        });
+
+        return lineas;
+    }
 
 
 });

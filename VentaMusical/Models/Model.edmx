@@ -100,14 +100,16 @@
         </EntityType>
         <EntityType Name="TB_VentaLinea">
           <Key>
-            <PropertyRef Name="IdLinea" />
+            <PropertyRef Name="NumeroFactura" />
           </Key>
-          <Property Name="IdLinea" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NumeroFactura" Type="int" Nullable="false" />
+          <Property Name="NumeroFactura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Linea" Type="int" Nullable="false" />
           <Property Name="CodigoCancion" Type="int" Nullable="false" />
           <Property Name="Precio" Type="decimal" Precision="28" Scale="2" Nullable="false" />
           <Property Name="IdImpuesto" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="28" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="28" Scale="2" Nullable="false" />
         </EntityType>
         <Association Name="FK__TB_Cancio__Image__48CFD27E">
           <End Role="TB_GenerosMusicales" Type="Self.TB_GenerosMusicales" Multiplicity="1" />
@@ -181,7 +183,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaE__IdFor__68487DD7">
+        <Association Name="FK__TB_VentaE__IdFor__123EB7A3">
           <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="0..1" />
           <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -193,7 +195,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaE__IdFor__693CA210">
+        <Association Name="FK__TB_VentaE__IdFor__1332DBDC">
           <End Role="TB_FormasDePago" Type="Self.TB_FormasDePago" Multiplicity="1" />
           <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -205,7 +207,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaL__Codig__6D0D32F4">
+        <Association Name="FK__TB_VentaL__Codig__17036CC0">
           <End Role="TB_Canciones" Type="Self.TB_Canciones" Multiplicity="1" />
           <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
           <ReferentialConstraint>
@@ -217,19 +219,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaL__IdImp__6C190EBB">
-          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="1" />
-          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TB_VentaEncabezado">
-              <PropertyRef Name="NumeroFactura" />
-            </Principal>
-            <Dependent Role="TB_VentaLinea">
-              <PropertyRef Name="NumeroFactura" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__TB_VentaL__IdImp__6E01572D">
+        <Association Name="FK__TB_VentaL__IdImp__17F790F9">
           <End Role="TB_Impuestos" Type="Self.TB_Impuestos" Multiplicity="1" />
           <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="*" />
           <ReferentialConstraint>
@@ -238,6 +228,18 @@
             </Principal>
             <Dependent Role="TB_VentaLinea">
               <PropertyRef Name="IdImpuesto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__Total__160F4887">
+          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="1" />
+          <End Role="TB_VentaLinea" Type="Self.TB_VentaLinea" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroFactura" />
+            </Principal>
+            <Dependent Role="TB_VentaLinea">
+              <PropertyRef Name="NumeroFactura" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -278,24 +280,24 @@
             <End Role="TB_Perfiles" EntitySet="TB_Perfiles" />
             <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaE__IdFor__68487DD7" Association="Self.FK__TB_VentaE__IdFor__68487DD7">
+          <AssociationSet Name="FK__TB_VentaE__IdFor__123EB7A3" Association="Self.FK__TB_VentaE__IdFor__123EB7A3">
             <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
             <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaE__IdFor__693CA210" Association="Self.FK__TB_VentaE__IdFor__693CA210">
+          <AssociationSet Name="FK__TB_VentaE__IdFor__1332DBDC" Association="Self.FK__TB_VentaE__IdFor__1332DBDC">
             <End Role="TB_FormasDePago" EntitySet="TB_FormasDePago" />
             <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaL__Codig__6D0D32F4" Association="Self.FK__TB_VentaL__Codig__6D0D32F4">
+          <AssociationSet Name="FK__TB_VentaL__Codig__17036CC0" Association="Self.FK__TB_VentaL__Codig__17036CC0">
             <End Role="TB_Canciones" EntitySet="TB_Canciones" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaL__IdImp__6C190EBB" Association="Self.FK__TB_VentaL__IdImp__6C190EBB">
-            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+          <AssociationSet Name="FK__TB_VentaL__IdImp__17F790F9" Association="Self.FK__TB_VentaL__IdImp__17F790F9">
+            <End Role="TB_Impuestos" EntitySet="TB_Impuestos" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaL__IdImp__6E01572D" Association="Self.FK__TB_VentaL__IdImp__6E01572D">
-            <End Role="TB_Impuestos" EntitySet="TB_Impuestos" />
+          <AssociationSet Name="FK__TB_VentaL__Total__160F4887" Association="Self.FK__TB_VentaL__Total__160F4887">
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
         </EntityContainer>
@@ -313,7 +315,7 @@
           <Property Name="Precio" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TB_GenerosMusicales" Relationship="VentaMusicalDBModel.FK__TB_Cancio__Image__48CFD27E" FromRole="TB_Canciones" ToRole="TB_GenerosMusicales" />
-          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Codig__6D0D32F4" FromRole="TB_Canciones" ToRole="TB_VentaLinea" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Codig__17036CC0" FromRole="TB_Canciones" ToRole="TB_VentaLinea" />
         </EntityType>
         <EntityType Name="TB_Generos">
           <Key>
@@ -339,7 +341,7 @@
           <Property Name="IdImpuesto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Porcentaje" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
-          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6E01572D" FromRole="TB_Impuestos" ToRole="TB_VentaLinea" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__17F790F9" FromRole="TB_Impuestos" ToRole="TB_VentaLinea" />
         </EntityType>
         <EntityType Name="TB_Modulos">
           <Key>
@@ -391,21 +393,7 @@
           <NavigationProperty Name="TB_Generos" Relationship="Self.FK__TB_Usuari__IdGen__31EC6D26" FromRole="TB_Usuarios" ToRole="TB_Generos" />
           <NavigationProperty Name="TB_Perfiles" Relationship="Self.FK__TB_Usuari__IdPer__30F848ED" FromRole="TB_Usuarios" ToRole="TB_Perfiles" />
           <NavigationProperty Name="TB_TipoTarjetas" Relationship="Self.FK__TB_Usuari__IdPer__300424B4" FromRole="TB_Usuarios" ToRole="TB_TipoTarjetas" />
-          <NavigationProperty Name="TB_VentaEncabezado" Relationship="Self.FK__TB_VentaE__Numer__3B75D760" FromRole="TB_Usuarios" ToRole="TB_VentaEncabezado" />
-        </EntityType>
-        <EntityType Name="TB_VentaEncabezado">
-          <Key>
-            <PropertyRef Name="NumeroFactura" />
-          </Key>
-          <Property Name="NumeroFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Subtotal" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
-          <Property Name="Total" Type="Decimal" Precision="28" Scale="2" Nullable="false" />
-          <Property Name="NumeroIdentificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TB_Usuarios" Relationship="Self.FK__TB_VentaE__Numer__3B75D760" FromRole="TB_VentaEncabezado" ToRole="TB_Usuarios" />
-          <Property Name="IdFormaPago" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="TB_FormasDePago" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__693CA210" FromRole="TB_VentaEncabezado" ToRole="TB_FormasDePago" />
-          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6C190EBB" FromRole="TB_VentaEncabezado" ToRole="TB_VentaLinea" />
+          <NavigationProperty Name="TB_VentaEncabezado" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__123EB7A3" FromRole="TB_Usuarios" ToRole="TB_VentaEncabezado" />
         </EntityType>
         <Association Name="FK__TB_Usuari__IdGen__31EC6D26">
           <End Role="TB_Generos" Type="Self.TB_Generos" Multiplicity="1" />
@@ -467,18 +455,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaE__Numer__3B75D760">
-          <End Role="TB_Usuarios" Type="Self.TB_Usuarios" Multiplicity="0..1" />
-          <End Role="TB_VentaEncabezado" Type="Self.TB_VentaEncabezado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TB_Usuarios">
-              <PropertyRef Name="NumeroIdentificacion" />
-            </Principal>
-            <Dependent Role="TB_VentaEncabezado">
-              <PropertyRef Name="NumeroIdentificacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="VentaMusicalDBEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TB_Canciones" EntityType="Self.TB_Canciones" />
           <EntitySet Name="TB_Generos" EntityType="Self.TB_Generos" />
@@ -489,7 +465,6 @@
           <EntitySet Name="TB_PermisosPorModulo" EntityType="Self.TB_PermisosPorModulo" />
           <EntitySet Name="TB_TipoTarjetas" EntityType="Self.TB_TipoTarjetas" />
           <EntitySet Name="TB_Usuarios" EntityType="Self.TB_Usuarios" />
-          <EntitySet Name="TB_VentaEncabezado" EntityType="Self.TB_VentaEncabezado" />
           <AssociationSet Name="FK__TB_Usuari__IdGen__31EC6D26" Association="Self.FK__TB_Usuari__IdGen__31EC6D26">
             <End Role="TB_Generos" EntitySet="TB_Generos" />
             <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
@@ -510,33 +485,34 @@
             <End Role="TB_TipoTarjetas" EntitySet="TB_TipoTarjetas" />
             <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaE__Numer__3B75D760" Association="Self.FK__TB_VentaE__Numer__3B75D760">
-            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
-            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
-          </AssociationSet>
           <AssociationSet Name="FK__TB_Cancio__Image__48CFD27E" Association="VentaMusicalDBModel.FK__TB_Cancio__Image__48CFD27E">
             <End Role="TB_GenerosMusicales" EntitySet="TB_GenerosMusicales" />
             <End Role="TB_Canciones" EntitySet="TB_Canciones" />
           </AssociationSet>
           <EntitySet Name="TB_FormasDePago" EntityType="VentaMusicalDBModel.TB_FormasDePago" />
-          <AssociationSet Name="FK__TB_VentaE__IdFor__693CA210" Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__693CA210">
-            <End Role="TB_FormasDePago" EntitySet="TB_FormasDePago" />
-            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
-          </AssociationSet>
+          <EntitySet Name="TB_VentaEncabezado" EntityType="VentaMusicalDBModel.TB_VentaEncabezado" />
           <EntitySet Name="TB_VentaLinea" EntityType="VentaMusicalDBModel.TB_VentaLinea" />
-          <AssociationSet Name="FK__TB_VentaL__Codig__6D0D32F4" Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__6D0D32F4">
+          <AssociationSet Name="FK__TB_VentaL__Codig__17036CC0" Association="VentaMusicalDBModel.FK__TB_VentaL__Codig__17036CC0">
             <End Role="TB_Canciones" EntitySet="TB_Canciones" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaL__IdImp__6E01572D" Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6E01572D">
+          <AssociationSet Name="FK__TB_VentaE__IdFor__1332DBDC" Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__1332DBDC">
+            <End Role="TB_FormasDePago" EntitySet="TB_FormasDePago" />
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__IdImp__17F790F9" Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__17F790F9">
             <End Role="TB_Impuestos" EntitySet="TB_Impuestos" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
-          <AssociationSet Name="FK__TB_VentaL__IdImp__6C190EBB" Association="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6C190EBB">
+          <AssociationSet Name="FK__TB_VentaE__IdFor__123EB7A3" Association="VentaMusicalDBModel.FK__TB_VentaE__IdFor__123EB7A3">
+            <End Role="TB_Usuarios" EntitySet="TB_Usuarios" />
+            <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TB_VentaL__Total__160F4887" Association="VentaMusicalDBModel.FK__TB_VentaL__Total__160F4887">
             <End Role="TB_VentaEncabezado" EntitySet="TB_VentaEncabezado" />
             <End Role="TB_VentaLinea" EntitySet="TB_VentaLinea" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <Association Name="FK__TB_Cancio__Image__48CFD27E">
           <End Type="VentaMusicalDBModel.TB_GenerosMusicales" Role="TB_GenerosMusicales" Multiplicity="1" />
           <End Type="VentaMusicalDBModel.TB_Canciones" Role="TB_Canciones" Multiplicity="*" />
@@ -555,35 +531,39 @@
           </Key>
           <Property Name="IdFormaPago" Type="Int32" Nullable="false" />
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TB_VentaEncabezado" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__693CA210" FromRole="TB_FormasDePago" ToRole="TB_VentaEncabezado" />
+          <NavigationProperty Name="TB_VentaEncabezado" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__1332DBDC" FromRole="TB_FormasDePago" ToRole="TB_VentaEncabezado" />
         </EntityType>
-        <Association Name="FK__TB_VentaE__IdFor__693CA210">
-          <End Type="VentaMusicalDBModel.TB_FormasDePago" Role="TB_FormasDePago" Multiplicity="1" />
-          <End Type="VentaMusicalDBModel.TB_VentaEncabezado" Role="TB_VentaEncabezado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TB_FormasDePago">
-              <PropertyRef Name="IdFormaPago" />
-            </Principal>
-            <Dependent Role="TB_VentaEncabezado">
-              <PropertyRef Name="IdFormaPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="TB_VentaEncabezado">
+          <Key>
+            <PropertyRef Name="NumeroFactura" />
+          </Key>
+          <Property Name="NumeroFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="28" Scale="2" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="28" Scale="2" />
+          <Property Name="NumeroIdentificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdFormaPago" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_FormasDePago" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__1332DBDC" FromRole="TB_VentaEncabezado" ToRole="TB_FormasDePago" />
+          <NavigationProperty Name="TB_Usuarios" Relationship="VentaMusicalDBModel.FK__TB_VentaE__IdFor__123EB7A3" FromRole="TB_VentaEncabezado" ToRole="TB_Usuarios" />
+          <NavigationProperty Name="TB_VentaLinea" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Total__160F4887" FromRole="TB_VentaEncabezado" ToRole="TB_VentaLinea" />
+        </EntityType>
         <EntityType Name="TB_VentaLinea">
           <Key>
-            <PropertyRef Name="IdLinea" />
+            <PropertyRef Name="NumeroFactura" />
           </Key>
-          <Property Name="IdLinea" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NumeroFactura" Type="Int32" Nullable="false" />
+          <Property Name="NumeroFactura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Linea" Type="Int32" Nullable="false" />
           <Property Name="CodigoCancion" Type="Int32" Nullable="false" />
           <Property Name="Precio" Type="Decimal" Nullable="false" Precision="28" Scale="2" />
           <Property Name="IdImpuesto" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="TB_Canciones" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Codig__6D0D32F4" FromRole="TB_VentaLinea" ToRole="TB_Canciones" />
-          <NavigationProperty Name="TB_Impuestos" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6E01572D" FromRole="TB_VentaLinea" ToRole="TB_Impuestos" />
-          <NavigationProperty Name="TB_VentaEncabezado" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__6C190EBB" FromRole="TB_VentaLinea" ToRole="TB_VentaEncabezado" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="28" Scale="2" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="28" Scale="2" />
+          <NavigationProperty Name="TB_Canciones" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Codig__17036CC0" FromRole="TB_VentaLinea" ToRole="TB_Canciones" />
+          <NavigationProperty Name="TB_Impuestos" Relationship="VentaMusicalDBModel.FK__TB_VentaL__IdImp__17F790F9" FromRole="TB_VentaLinea" ToRole="TB_Impuestos" />
+          <NavigationProperty Name="TB_VentaEncabezado" Relationship="VentaMusicalDBModel.FK__TB_VentaL__Total__160F4887" FromRole="TB_VentaLinea" ToRole="TB_VentaEncabezado" />
         </EntityType>
-        <Association Name="FK__TB_VentaL__Codig__6D0D32F4">
+        <Association Name="FK__TB_VentaL__Codig__17036CC0">
           <End Type="VentaMusicalDBModel.TB_Canciones" Role="TB_Canciones" Multiplicity="1" />
           <End Type="VentaMusicalDBModel.TB_VentaLinea" Role="TB_VentaLinea" Multiplicity="*" />
           <ReferentialConstraint>
@@ -595,7 +575,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaL__IdImp__6E01572D">
+        <Association Name="FK__TB_VentaE__IdFor__1332DBDC">
+          <End Type="VentaMusicalDBModel.TB_FormasDePago" Role="TB_FormasDePago" Multiplicity="1" />
+          <End Type="VentaMusicalDBModel.TB_VentaEncabezado" Role="TB_VentaEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_FormasDePago">
+              <PropertyRef Name="IdFormaPago" />
+            </Principal>
+            <Dependent Role="TB_VentaEncabezado">
+              <PropertyRef Name="IdFormaPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__IdImp__17F790F9">
           <End Type="VentaMusicalDBModel.TB_Impuestos" Role="TB_Impuestos" Multiplicity="1" />
           <End Type="VentaMusicalDBModel.TB_VentaLinea" Role="TB_VentaLinea" Multiplicity="*" />
           <ReferentialConstraint>
@@ -607,9 +599,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TB_VentaL__IdImp__6C190EBB">
+        <Association Name="FK__TB_VentaE__IdFor__123EB7A3">
+          <End Type="VentaMusicalDBModel.TB_Usuarios" Role="TB_Usuarios" Multiplicity="0..1" />
+          <End Type="VentaMusicalDBModel.TB_VentaEncabezado" Role="TB_VentaEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuarios">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Principal>
+            <Dependent Role="TB_VentaEncabezado">
+              <PropertyRef Name="NumeroIdentificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TB_VentaL__Total__160F4887">
           <End Type="VentaMusicalDBModel.TB_VentaEncabezado" Role="TB_VentaEncabezado" Multiplicity="1" />
-          <End Type="VentaMusicalDBModel.TB_VentaLinea" Role="TB_VentaLinea" Multiplicity="*" />
+          <End Type="VentaMusicalDBModel.TB_VentaLinea" Role="TB_VentaLinea" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="TB_VentaEncabezado">
               <PropertyRef Name="NumeroFactura" />
@@ -619,7 +623,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -709,18 +713,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TB_VentaEncabezado">
-            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_VentaEncabezado">
-              <MappingFragment StoreEntitySet="TB_VentaEncabezado">
-                <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
-                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TB_FormasDePago">
             <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_FormasDePago">
               <MappingFragment StoreEntitySet="TB_FormasDePago">
@@ -729,15 +721,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TB_VentaEncabezado">
+            <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_VentaEncabezado">
+              <MappingFragment StoreEntitySet="TB_VentaEncabezado">
+                <ScalarProperty Name="IdFormaPago" ColumnName="IdFormaPago" />
+                <ScalarProperty Name="NumeroIdentificacion" ColumnName="NumeroIdentificacion" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TB_VentaLinea">
             <EntityTypeMapping TypeName="VentaMusicalDBModel.TB_VentaLinea">
               <MappingFragment StoreEntitySet="TB_VentaLinea">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="IdImpuesto" ColumnName="IdImpuesto" />
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
                 <ScalarProperty Name="CodigoCancion" ColumnName="CodigoCancion" />
                 <ScalarProperty Name="Linea" ColumnName="Linea" />
                 <ScalarProperty Name="NumeroFactura" ColumnName="NumeroFactura" />
-                <ScalarProperty Name="IdLinea" ColumnName="IdLinea" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

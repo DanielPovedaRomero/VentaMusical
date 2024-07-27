@@ -14,12 +14,14 @@ namespace VentaMusical.Models
     
     public partial class TB_VentaLinea
     {
-        public long IdLinea { get; set; }
         public int NumeroFactura { get; set; }
         public int Linea { get; set; }
         public int CodigoCancion { get; set; }
         public decimal Precio { get; set; }
         public int IdImpuesto { get; set; }
+        public int Cantidad { get; set; }
+        public decimal Subtotal { get; set; }
+        public decimal Total { get; set; }
     
         public virtual TB_Canciones TB_Canciones { get; set; }
         public virtual TB_Impuestos TB_Impuestos { get; set; }
