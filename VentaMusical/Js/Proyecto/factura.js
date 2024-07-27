@@ -46,7 +46,7 @@ $(document).ready(function () {
             // Agregar una nueva fila a la tabla de la factura
             var newRow = `
                 <tr class="text-center">
-                    <td>${codigo}</td>
+                    <td class='d-none'>${codigo}</td>
                     <td>${nombre}</td>
                     <td><input type="number" class="form-control form-control-sm quantity" value="1" min="1" /></td>
                     <td>${precio}</td>

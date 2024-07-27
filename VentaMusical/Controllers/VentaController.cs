@@ -174,6 +174,7 @@ namespace VentaMusical.Controllers
 
                         // Obtener el ID del encabezado recién insertado
                         int numeroFactura = encabezadoDB.NumeroFactura;
+                        int numeroLinea = 1;
 
                         // Crear las líneas y asociarlas con el encabezado
                         foreach (var linea in lineas)
@@ -186,10 +187,13 @@ namespace VentaMusical.Controllers
                                 IdImpuesto = linea.IdImpuesto,
                                 Subtotal = linea.SubTotal,
                                 Total = linea.Total,
+                                Linea = numeroLinea,
                                 NumeroFactura = numeroFactura 
                             };
 
                             db.TB_VentaLinea.Add(lineaDB);
+
+                            numeroLinea++;
                         }
 
                         // Guardar todas las líneas en una sola operación
