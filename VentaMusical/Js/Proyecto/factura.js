@@ -8,6 +8,7 @@ let tableCanciones = '#cancionTable';
 let modalCancion = '#modalCancion';
 
 let tableFactura = '#facturaTable';
+let numeroFactura = '#NumeroFactura';
 let subTotal = '#subtotal';
 let total = '#total';
 let formaPago = '#selectFormasDePago';
@@ -155,8 +156,10 @@ $(document).ready(function () {
         var v_formaPago = $(formaPago).val();
         var v_subTotal = $(subTotal).text();
         var v_total = $(total).text();
+        var v_numeroFactura = $(numeroFactura).val();
 
-        var encabezado = {          
+        var encabezado = {   
+            NumeroFactura : v_numeroFactura,
             Fecha: new Date(), 
             Subtotal: v_subTotal,
             Total: v_total,
@@ -194,7 +197,6 @@ $(document).ready(function () {
     function LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total) {
         this.NumeroFactura = numeroFactura;
         this.CodigoCancion = codigoCancion,
-        this.Linea = 1;
         this.Cantidad = cantidad;
         this.Precio = precio;
         this.IdImpuesto = impuesto;
@@ -205,14 +207,14 @@ $(document).ready(function () {
     function ObtenerLineas() {
         var lineas = [];
 
-        $('#facturaTable tbody tr').each(function () {
-            var numeroFactura = 0;
+        $('#facturaTable tbody tr').each(function () {          
             var codigoCancion = $(this).find('td').eq(0).text();
             var cantidad = $(this).find('.quantity').val();
             var precio = $(this).find('td').eq(3).text();
             var impuesto = $(this).find('td').eq(4).find('select').val(); 
             var subtotal = $(this).find('td').eq(5).text();
             var total = $(this).find('td').eq(6).text();
+
 
             // Crear una nueva instancia de la entidad y agregarla a la lista
             var linea = new LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total);

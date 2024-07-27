@@ -12,13 +12,16 @@
         Selected = g.IdFormaPago == (Model.Encabezado == null ? 0 : Model.Encabezado.IdFormaPago)
 
     }).ToList();
-  
+
 }
+
+<input type="hidden" id="NumeroFactura" name="NumeroFactura" value="@(Model.Encabezado == null ? "0" : Model.Encabezado.NumeroFactura.ToString())">
+
 
 <div class="container mt-5">
     <div class="form-group row align-items-center">
         <div class="col-md-4">
-            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="@(Model.Encabezado == null ? "" : Model.Encabezado.NumeroIdentificacion)">
+            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="@(Model.Encabezado == null ? "0" : Model.Encabezado.NumeroIdentificacion)">
             <label for="NombreUsuario" class="col-form-label">
                 <i class="fas fa-user"></i> Usuario:
             </label>
@@ -75,14 +78,14 @@
                             <td> @(item.Precio)</td>
                             <td>
                                 @Html.DropDownList(
-                                 "impuestos", 
+                                 "impuestos",
                                  Model.Impuestos.Select(g => new SelectListItem
                                  {
-                                     Value = g.IdImpuesto.ToString(), 
-                                     Text = $"{g.Descripcion} {(int)g.Porcentaje}%", 
-                                     Selected = item.IdImpuesto == g.IdImpuesto 
-                                 }).ToList(), 
-                                 new { @class = "form-control", @id = "selectImpuestos" } 
+                                     Value = g.IdImpuesto.ToString(),
+                                     Text = $"{g.Descripcion} {(int)g.Porcentaje}%",
+                                     Selected = item.IdImpuesto == g.IdImpuesto
+                                 }).ToList(),
+                                 new { @class = "form-control", @id = "selectImpuestos" }
                                 )
                             </td>
                             <td class="subtotal"> @(item.SubTotal)</td>
@@ -96,7 +99,7 @@
                     }
                 }
             }
-            </tbody>
+        </tbody>
     </table>
 
     <div class="row">

@@ -180,8 +180,7 @@ namespace VentaMusical.Controllers
                 {
 
                     if (encabezado.NumeroFactura == 0)
-                    {
-                        // Crear el encabezado
+                    {                      
                         TB_VentaEncabezado encabezadoDB = new TB_VentaEncabezado()
                         {
                             Fecha = encabezado.Fecha,
@@ -193,12 +192,10 @@ namespace VentaMusical.Controllers
 
                         db.TB_VentaEncabezado.Add(encabezadoDB);
                         db.SaveChanges();
-
-                        // Obtener el ID del encabezado recién insertado
+                       
                         int numeroFactura = encabezadoDB.NumeroFactura;
                         int numeroLinea = 1;
-
-                        // Crear las líneas y asociarlas con el encabezado
+                       
                         foreach (var linea in lineas)
                         {
                             TB_VentaLinea lineaDB = new TB_VentaLinea()
@@ -217,28 +214,56 @@ namespace VentaMusical.Controllers
 
                             numeroLinea++;
                         }
-
-                        // Guardar todas las líneas en una sola operación
+                      
                         db.SaveChanges();
-
-
 
                     }
                     else
-                    {
+                    {                     
+                        var lineasExistentes = db.TB_VentaLinea.Where(l => l.NumeroFactura == encabezado.NumeroFactura).ToList();
+                        foreach (var lineaExistente in lineasExistentes)
+                        {
+                            db.TB_VentaLinea.Remove(lineaExistente);
+                        }
+                        db.SaveChanges();
+                       
+                        var encabezadoDB = db.TB_VentaEncabezado.FirstOrDefault(e => e.NumeroFactura == encabezado.NumeroFactura);
+                        if (encabezadoDB != null)
+                        {
+                            encabezadoDB.Fecha = encabezado.Fecha;
+                            encabezadoDB.Subtotal = encabezado.Subtotal;
+                            encabezadoDB.Total = encabezado.Total;
+                            encabezadoDB.NumeroIdentificacion = encabezado.NumeroIdentificacion;
+                            encabezadoDB.IdFormaPago = encabezado.IdFormaPago;
 
-                        //TB_Canciones cancionExistente = db.TB_Canciones.Find(CodigoCancion);
-                        //if (cancionExistente != null)
-                        //{
-                        //    cancionExistente.Nombre = Nombre;
-                        //    cancionExistente.Precio = Precio;
-                        //    cancionExistente.CodigoGenero = CodigoGenero;
-                        //    cancionExistente.Imagen = Imagen;
-                        //}
-                        //else
-                        //{
-                        //    return Json(new RespuestaModel { Codigo = HttpStatusCode.NotFound, Mensaje = Mensajes.NoEncontrado, Resultado = false });
-                        //}
+                            db.SaveChanges();
+                        }
+                       
+                        
+                        int numeroFactura = encabezadoDB.NumeroFactura;
+                        int numeroLinea = 1;
+
+                       
+                        foreach (var linea in lineas)
+                        {
+                            TB_VentaLinea lineaDB = new TB_VentaLinea()
+                            {
+                                CodigoCancion = linea.CodigoCancion,
+                                Cantidad = linea.Cantidad,
+                                Precio = linea.Precio,
+                                IdImpuesto = linea.IdImpuesto,
+                                Subtotal = linea.SubTotal,
+                                Total = linea.Total,
+                                Linea = numeroLinea,
+                                NumeroFactura = numeroFactura
+                            };
+
+                            db.TB_VentaLinea.Add(lineaDB);
+
+                            numeroLinea++;
+                        }
+                       
+                        db.SaveChanges();
                     }
 
                 }
