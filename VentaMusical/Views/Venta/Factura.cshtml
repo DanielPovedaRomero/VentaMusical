@@ -9,10 +9,8 @@
     {
         Value = g.IdFormaPago.ToString(),
         Text = g.Descripcion,
-        Selected = g.IdFormaPago == (Model.Encabezado == null ? 0 : Model.Encabezado.IdFormaPago)
-
+        Selected = Model.Encabezado != null && g.IdFormaPago == Model.Encabezado.IdFormaPago
     }).ToList();
-
 }
 
 <input type="hidden" id="NumeroFactura" name="NumeroFactura" value="@(Model.Encabezado == null ? "0" : Model.Encabezado.NumeroFactura.ToString())">
@@ -41,7 +39,11 @@
             <label for="FormasDePago" class="col-form-label">
                 <i class="fas fa-credit-card ml-2"></i> Forma de Pago:
             </label>
-            @Html.DropDownList("FormasDePago", formasDePago, new { @class = "form-control", @id = "selectFormasDePago" })
+                @Html.DropDownListFor(
+                     model => model.Encabezado.IdFormaPago, 
+                     formasDePago,
+                     new { @class = "form-control", @id = "selectFormasDePago" }
+                 )
         </div>
     </div>
 
@@ -77,15 +79,20 @@
                             <td><input type="number" class="form-control form-control-sm quantity" value="@(item.Cantidad)" min="1" /></td>
                             <td> @(item.Precio)</td>
                             <td>
-                                @Html.DropDownList(
-                                 "impuestos",
-                                 Model.Impuestos.Select(g => new SelectListItem
-                                 {
-                                     Value = g.IdImpuesto.ToString(),
-                                     Text = $"{g.Descripcion} {(int)g.Porcentaje}%",
-                                     Selected = item.IdImpuesto == g.IdImpuesto
-                                 }).ToList(),
-                                 new { @class = "form-control", @id = "selectImpuestos" }
+
+                                @{ 
+                                    var impuestos = Model.Impuestos.Select(g => new SelectListItem
+                                    {
+                                        Value = g.IdImpuesto.ToString(),
+                                        Text = $"{g.Descripcion} {(int)g.Porcentaje}%",
+                                        Selected = g.IdImpuesto == item.IdImpuesto
+                                    }).ToList();
+                                }
+
+                                @Html.DropDownListFor(
+                                    model => item.IdImpuesto, 
+                                    impuestos,
+                                    new { @class = "form-control", @id = $"selectImpuestos_{item.CodigoCancion}" } 
                                 )
                             </td>
                             <td class="subtotal"> @(item.SubTotal)</td>

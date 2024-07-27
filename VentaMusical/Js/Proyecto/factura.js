@@ -214,7 +214,7 @@ $(document).ready(function () {
             var impuesto = $(this).find('td').eq(4).find('select').val(); 
             var subtotal = $(this).find('td').eq(5).text();
             var total = $(this).find('td').eq(6).text();
-
+     
 
             // Crear una nueva instancia de la entidad y agregarla a la lista
             var linea = new LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total);
