@@ -1,0 +1,129 @@
+﻿@model List<VentaMusical.Models.ViewModels.UsuarioModels.ListarUsuario>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center mt-5">Módulode Gestión de Usuarios</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="add-genre-btn mt-3">
+                <button class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fas fa-solid fa-icons mx-2"></i>Nuevo Usuario
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID del Usuario</th>
+                    <th>Nombre</th>
+                    <th>IdGenero</th>
+                    <th>Correo</th>
+                    <th>ID de Perfil</th>
+                    <th>NumeroTarjeta</th>
+                    <th>Contrasena</th>
+                    <th>IdPerfil</th>
+                    <th>Botones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fila in Model)
+                {
+                    <tr>
+                        <td>@fila.NumeroIdentificacion</td>
+                        <td>@fila.Nombre</td>
+                        <td>@fila.IdGenero</td>
+                        <td>@fila.Correo</td>
+                        <td>@fila.IdPerfil</td>
+                        <td>@fila.NumeroTarjeta</td>
+                        <td>@fila.Contrasena</td>
+                        <td>@fila.IdPerfil</td>
+                        <td><input type="button" value="Editar" class="btn btn-primary" onclick="document.location.href='@Url.Content("~/Usuario/Editar/" + fila.NumeroIdentificacion)'" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row mt-3">
+        @foreach (var usuario in Model)
+        {
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 mt-3">
+                <div class="d-flex justify-content-center align-items-center genre-label">
+                    <i class="fas fa-compact-disc"></i>
+                    <label class="ms-2">@usuario.Nombre</label>
+                </div>
+                <div class="card">
+                    <div class="card-buttons">
+                        <button data-id="@usuario.NumeroIdentificacion" class="edit"><i class="fas fa-edit"></i></button>
+                        <button data-id="@usuario.NumeroIdentificacion" class="delete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Registro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" enctype="multipart/form-data">
+                    <input type="hidden" id="NumeroIdentificacion" name="NumeroIdentificacion" value="0">
+                    <div class="mb-3">
+                        <label for="NumeroIdentificacion" class="form-label">Numero de identificación</label>
+                        <input type="text" class="form-control" id="NumeroIdentificacion" name="NumeroIdentificacion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Correo" class="form-label">Correo electrónico</label>
+                        <input type="text" class="form-control" id="Correo" name="Correo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="IdTarjeta" class="form-label">Id de la tarjeta</label>
+                        <input type="text" class="form-control" id="IdTarjeta" name="IdTarjeta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="NumeroTarjeta" class="form-label">Número de Tarjeta</label>
+                        <input type="text" class="form-control" id="NumeroTarjeta" name="NumeroTarjeta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Contrasena" class="form-label">Contraseña</label>
+                        <input type="text" class="form-control" id="Contrasena" name="Contrasena" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="IdPerfil" class="form-label">Id del perfil de usuario</label>
+                        <input type="text" class="form-control" id="IdPerfil" name="IdPerfil" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/Usuarios")
+}
+
+
