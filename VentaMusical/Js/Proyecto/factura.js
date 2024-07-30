@@ -8,6 +8,13 @@ let tableCanciones = '#cancionTable';
 let modalCancion = '#modalCancion';
 
 let tableFactura = '#facturaTable';
+let numeroFactura = '#NumeroFactura';
+let subTotal = '#subtotal';
+let total = '#total';
+let formaPago = '#selectFormasDePago';
+
+let btnGuardar = '#btnGuardar';
+
 $(document).ready(function () {
 
     //SELECCIONAR USUARIO
@@ -40,7 +47,7 @@ $(document).ready(function () {
             // Agregar una nueva fila a la tabla de la factura
             var newRow = `
                 <tr class="text-center">
-                    <td>${codigo}</td>
+                    <td class='d-none'>${codigo}</td>
                     <td>${nombre}</td>
                     <td><input type="number" class="form-control form-control-sm quantity" value="1" min="1" /></td>
                     <td>${precio}</td>
@@ -67,11 +74,13 @@ $(document).ready(function () {
 
     // Evento para actualizar el total cuando cambia la cantidad o el impuesto
     $(document).on('input', '.quantity, .impuesto-select', function () {
+
+        console.log('Hola');
+
         var $row = $(this).closest('tr');
         var quantity = parseFloat($row.find('.quantity').val());
         var price = parseFloat($row.find('td:nth-child(4)').text());
         var taxPercentage = parseFloat($row.find('.impuesto-select option:selected').data('porcentaje'));
-
         var subtotal = price * quantity;
         var taxAmount = subtotal * (taxPercentage / 100);
         var total = subtotal + taxAmount;
@@ -140,6 +149,83 @@ $(document).ready(function () {
         $('#subtotal').text(subtotal.toFixed(2));
         $('#total').text(total.toFixed(2));
     }
+
+    $(btnGuardar).on('click', function (e) {
+        e.preventDefault();
+
+        //ENCABEZADO
+        var v_usuario = $(codigoUsuarioTxt).val();
+        var v_formaPago = $(formaPago).val();
+        var v_subTotal = $(subTotal).text();
+        var v_total = $(total).text();
+        var v_numeroFactura = $(numeroFactura).val();
+
+        var encabezado = {   
+            NumeroFactura : v_numeroFactura,
+            Fecha: new Date(), 
+            Subtotal: v_subTotal,
+            Total: v_total,
+            NumeroIdentificacion: v_usuario,          
+            IdFormaPago: v_formaPago
+        };
+
+        var lineas = ObtenerLineas();
+
+        var venta = {
+            Encabezado: encabezado,
+            Lineas: lineas
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Venta/InsertarFactura",
+            data: JSON.stringify(venta),
+            contentType: "application/json",
+            success: function (response)
+            {
+                if (response.Resultado) {
+                    MostrarAlertaExitosa(response.Mensaje);    
+                } else {
+                    MostrarAlertaError(response.Mensaje);
+                }
+            },
+            error: function (xhr, status, error) {
+                MostrarAlertaError("Ocurrió un error.");
+            }
+        });
+
+    });
+
+    function LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total) {
+        this.NumeroFactura = numeroFactura;
+        this.CodigoCancion = codigoCancion,
+        this.Cantidad = cantidad;
+        this.Precio = precio;
+        this.IdImpuesto = impuesto;
+        this.Subtotal = subtotal;
+        this.Total = total;
+    }
+
+    function ObtenerLineas() {
+        var lineas = [];
+
+        $('#facturaTable tbody tr').each(function () {          
+            var codigoCancion = $(this).find('td').eq(0).text();
+            var cantidad = $(this).find('.quantity').val();
+            var precio = $(this).find('td').eq(3).text();
+            var impuesto = $(this).find('td').eq(4).find('select').val(); 
+            var subtotal = $(this).find('td').eq(5).text();
+            var total = $(this).find('td').eq(6).text();
+     
+
+            // Crear una nueva instancia de la entidad y agregarla a la lista
+            var linea = new LineaEntidad(numeroFactura, codigoCancion, cantidad, precio, impuesto, subtotal, total);
+            lineas.push(linea);
+        });
+
+        return lineas;
+    }
+
 
 });
 

@@ -8,19 +8,23 @@
     var formasDePago = Model.FormasDePago.Select(g => new SelectListItem
     {
         Value = g.IdFormaPago.ToString(),
-        Text = g.Descripcion
+        Text = g.Descripcion,
+        Selected = Model.Encabezado != null && g.IdFormaPago == Model.Encabezado.IdFormaPago
     }).ToList();
 }
+
+<input type="hidden" id="NumeroFactura" name="NumeroFactura" value="@(Model.Encabezado == null ? "0" : Model.Encabezado.NumeroFactura.ToString())">
+
 
 <div class="container mt-5">
     <div class="form-group row align-items-center">
         <div class="col-md-4">
-            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="0">
+            <input type="hidden" id="CodigoUsuario" name="CodigoUsuario" value="@(Model.Encabezado == null ? "0" : Model.Encabezado.NumeroIdentificacion)">
             <label for="NombreUsuario" class="col-form-label">
-                <i class="fas fa-user"></i> Usuario:               
+                <i class="fas fa-user"></i> Usuario:
             </label>
             <div class="input-group mb-2">
-                <input type="text" readonly class="form-control" id="NombreUsuario">
+                <input type="text" readonly class="form-control" id="NombreUsuario" value="@(Model.Encabezado == null ? "" : Model.Encabezado.NombreUsuario)">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="button" id="btnAgregarUsuario" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                         <i class="fas fa-user-plus"></i>
@@ -35,7 +39,11 @@
             <label for="FormasDePago" class="col-form-label">
                 <i class="fas fa-credit-card ml-2"></i> Forma de Pago:
             </label>
-            @Html.DropDownList("FormasDePago", formasDePago, new { @class = "form-control", @id = "selectFormasDePago" })
+                @Html.DropDownListFor(
+                     model => model.Encabezado.IdFormaPago, 
+                     formasDePago,
+                     new { @class = "form-control", @id = "selectFormasDePago" }
+                 )
         </div>
     </div>
 
@@ -48,7 +56,7 @@
     <table class="table table-bordered table-striped table-hover" id="facturaTable">
         <thead>
             <tr class="text-center">
-                <th>Cod Canción</th>
+                <th class="d-none">Cod Canción</th>
                 <th>Descripción</th>
                 <th>Cantidad</th>
                 <th>Precio Unitario</th>
@@ -59,6 +67,44 @@
             </tr>
         </thead>
         <tbody>
+            @if (Model.Lineas != null)
+            {
+                if (Model.Lineas.Any())
+                {
+                    foreach (var item in Model.Lineas)
+                    {
+                        <tr class="text-center">
+                            <td class='d-none'> @(item.CodigoCancion)</td>
+                            <td> @(item.CodigoCancion)</td>
+                            <td><input type="number" class="form-control form-control-sm quantity" value="@(item.Cantidad)" min="1" /></td>
+                            <td> @(item.Precio)</td>
+                            <td>                              
+                                <select name="impuestoSelect"
+                                        id="impuestoSelect"
+                                        class="form-control impuesto-select">
+
+                                    @foreach (var impuesto in Model.Impuestos)
+                                    {
+                                        <option value="@impuesto.IdImpuesto"
+                                                @(impuesto.IdImpuesto == item.IdImpuesto ? "selected" : "")
+                                                data-porcentaje="@impuesto.Porcentaje">
+                                                @($"{impuesto.Descripcion} {(int)impuesto.Porcentaje}%")
+                                        </option>
+                                    }
+
+                                </select>
+                            </td>
+                            <td class="subtotal"> @(item.SubTotal)</td>
+                            <td class="total"> @(item.Total)</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm remove-row">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
         </tbody>
     </table>
 
@@ -69,11 +115,15 @@
                 <tbody>
                     <tr>
                         <td class="text-right"><strong>Subtotal:</strong></td>
-                        <td id="subtotal" class="text-right">0.00</td>
+                        <td id="subtotal" class="text-right">
+                            @(Model.Encabezado == null ? "0.00" : Model.Encabezado.Subtotal.ToString("F2"))
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-right"><strong>Total:</strong></td>
-                        <td id="total" class="text-right">0.00</td>
+                        <td id="total" class="text-right">
+                            @(Model.Encabezado == null ? "0.00" : Model.Encabezado.Total.ToString("F2"))
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -81,7 +131,7 @@
     </div>
 
     <div class="col-md-12 d-flex justify-content-end mb-2">
-        <button class="btn btn-success" type="button" id="btnFinalizarCompra">
+        <button id="btnGuardar" class="btn btn-success" type="button" id="btnFinalizarCompra">
             <i class="fas fa-check-circle"></i> Finalizar Compra
         </button>
     </div>
@@ -89,15 +139,13 @@
 </div>
 
 <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Seleccionar Usuario</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
                 <table id="usuarioTable" class="DtTable table table-striped table-bordered">
                     <thead>
                         <tr class="text-center">
@@ -126,45 +174,51 @@
     </div>
 </div>
 
+
 <div class="modal fade" id="modalCancion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Agregar la clase modal-lg para un modal más ancho -->
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Seleccionar Canción</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
-
-                <table id="cancionTable" class="DtTable table table-striped table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Seleccionar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var cancion in Model.Canciones)
-                        {
+                <div class="table-responsive">
+                    <!-- Añadir una clase para hacer la tabla responsiva -->
+                    <table id="cancionTable" class="DtTable table table-striped table-bordered">
+                        <thead>
                             <tr class="text-center">
-                                <td>@cancion.CodigoCancion</td>
-                                <td>@cancion.Nombre</td>
-                                <td>@cancion.Precio</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm select-cancion" data-codigo="@cancion.CodigoCancion" data-nombre="@cancion.Nombre" data-precio="@cancion.Precio">
-                                        <i class="fas fa-hand-pointer"></i>
-                                    </button>
-                                </td>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Genero</th>
+                                <th>Precio</th>
+                                <th>Seleccionar</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var cancion in Model.Canciones)
+                            {
+                                <tr class="text-center">
+                                    <td>@cancion.CodigoCancion</td>
+                                    <td>@cancion.Nombre</td>
+                                    <td>@cancion.NombreGenero</td>
+                                    <td>@cancion.Precio</td>
+                                    <td>
+                                        <button id="btnSeleccionarLinea" class="btn btn-success btn-sm select-cancion" data-codigo="@cancion.CodigoCancion" data-nombre="@cancion.Nombre" data-precio="@cancion.Precio">
+                                            <i class="fas fa-hand-pointer"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
 

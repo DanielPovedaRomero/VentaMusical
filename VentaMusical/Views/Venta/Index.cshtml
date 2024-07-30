@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-6">
             <div class="add-genre-btn mt-3">
-                <a class="btn btn-primary" href="@Url.Action("Factura", "Venta")">
+                <a class="btn btn-primary"href="@Url.Action("Factura", "Venta")">
                     <i class="fas fa-chart-line"></i> Ventas
                 </a>
             </div>
@@ -22,7 +22,7 @@
                     <th>Usuario</th>
                     <th>Nombre</th>
                     <th>Total</th>
-                    <th>Acciones</th>
+                    <th>Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,8 +35,7 @@
                         <td>@venta.NombreUsuario</td>
                         <td>@venta.Total</td>
                         <td>
-                            <button data-id="@venta.NumeroFactura" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></button>
-                            <button data-id="@venta.NumeroFactura" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt"></i></button>
+                            <a data-id="@venta.NumeroFactura" href="@Url.Action("Factura", "Venta", new { id = @venta.NumeroFactura })" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></a>                
                         </td>
                     </tr>
                 }
