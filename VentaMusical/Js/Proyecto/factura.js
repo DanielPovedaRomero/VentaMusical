@@ -75,8 +75,6 @@ $(document).ready(function () {
     // Evento para actualizar el total cuando cambia la cantidad o el impuesto
     $(document).on('input', '.quantity, .impuesto-select', function () {
 
-        console.log('Hola');
-
         var $row = $(this).closest('tr');
         var quantity = parseFloat($row.find('.quantity').val());
         var price = parseFloat($row.find('td:nth-child(4)').text());
@@ -160,7 +158,10 @@ $(document).ready(function () {
         var v_total = $(total).text();
         var v_numeroFactura = $(numeroFactura).val();
 
-        var encabezado = {   
+        let encabezado = [];
+        let lineas = [];
+
+        encabezado = {   
             NumeroFactura : v_numeroFactura,
             Fecha: new Date(), 
             Subtotal: v_subTotal,
@@ -169,7 +170,7 @@ $(document).ready(function () {
             IdFormaPago: v_formaPago
         };
 
-        var lineas = ObtenerLineas();
+        lineas = ObtenerLineas();
 
         var venta = {
             Encabezado: encabezado,
@@ -225,7 +226,6 @@ $(document).ready(function () {
 
         return lineas;
     }
-
 
 });
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 using VentaMusical.Constantes;
 using VentaMusical.Models;
@@ -137,7 +138,7 @@ namespace VentaMusical.Controllers
                 model.Lineas = resultado.Item2;
             }
 
-        
+
 
             return View(model: model);
         }
@@ -176,104 +177,114 @@ namespace VentaMusical.Controllers
         {
             try
             {
-                using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                var resultadoValidaciones = ValidarFactura(encabezado, lineas);
+
+                if (!String.IsNullOrEmpty(resultadoValidaciones))
+                {
+                    return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = resultadoValidaciones, Resultado = false });
+                }
+                else
                 {
 
-                    if (encabezado.NumeroFactura == 0)
-                    {                      
-                        TB_VentaEncabezado encabezadoDB = new TB_VentaEncabezado()
-                        {
-                            Fecha = encabezado.Fecha,
-                            Subtotal = encabezado.Subtotal,
-                            Total = encabezado.Total,
-                            NumeroIdentificacion = encabezado.NumeroIdentificacion,
-                            IdFormaPago = encabezado.IdFormaPago
-                        };
+                    using (VentaMusicalDBEntities db = new VentaMusicalDBEntities())
+                    {
 
-                        db.TB_VentaEncabezado.Add(encabezadoDB);
-                        db.SaveChanges();
-                       
-                        int numeroFactura = encabezadoDB.NumeroFactura;
-                        int numeroLinea = 1;
-                       
-                        foreach (var linea in lineas)
+                        if (encabezado.NumeroFactura == 0)
                         {
-                            TB_VentaLinea lineaDB = new TB_VentaLinea()
+                            TB_VentaEncabezado encabezadoDB = new TB_VentaEncabezado()
                             {
-                                CodigoCancion = linea.CodigoCancion,
-                                Cantidad = linea.Cantidad,
-                                Precio = linea.Precio,
-                                IdImpuesto = linea.IdImpuesto,
-                                Subtotal = linea.SubTotal,
-                                Total = linea.Total,
-                                Linea = numeroLinea,
-                                NumeroFactura = numeroFactura 
+                                Fecha = encabezado.Fecha,
+                                Subtotal = encabezado.Subtotal,
+                                Total = encabezado.Total,
+                                NumeroIdentificacion = encabezado.NumeroIdentificacion,
+                                IdFormaPago = encabezado.IdFormaPago
                             };
 
-                            db.TB_VentaLinea.Add(lineaDB);
+                            db.TB_VentaEncabezado.Add(encabezadoDB);
+                            db.SaveChanges();
 
-                            numeroLinea++;
-                        }
-                      
-                        db.SaveChanges();
+                            int numeroFactura = encabezadoDB.NumeroFactura;
+                            int numeroLinea = 1;
 
-                    }
-                    else
-                    {                     
-                        var lineasExistentes = db.TB_VentaLinea.Where(l => l.NumeroFactura == encabezado.NumeroFactura).ToList();
-                        foreach (var lineaExistente in lineasExistentes)
-                        {
-                            db.TB_VentaLinea.Remove(lineaExistente);
+                            foreach (var linea in lineas)
+                            {
+                                TB_VentaLinea lineaDB = new TB_VentaLinea()
+                                {
+                                    CodigoCancion = linea.CodigoCancion,
+                                    Cantidad = linea.Cantidad,
+                                    Precio = linea.Precio,
+                                    IdImpuesto = linea.IdImpuesto,
+                                    Subtotal = linea.SubTotal,
+                                    Total = linea.Total,
+                                    Linea = numeroLinea,
+                                    NumeroFactura = numeroFactura
+                                };
+
+                                db.TB_VentaLinea.Add(lineaDB);
+
+                                numeroLinea++;
+                            }
+
+                            db.SaveChanges();
+
                         }
-                        db.SaveChanges();
-                       
-                        var encabezadoDB = db.TB_VentaEncabezado.FirstOrDefault(e => e.NumeroFactura == encabezado.NumeroFactura);
-                        if (encabezadoDB != null)
+                        else
                         {
-                            encabezadoDB.Fecha = encabezado.Fecha;
-                            encabezadoDB.Subtotal = encabezado.Subtotal;
-                            encabezadoDB.Total = encabezado.Total;
-                            encabezadoDB.NumeroIdentificacion = encabezado.NumeroIdentificacion;
-                            encabezadoDB.IdFormaPago = encabezado.IdFormaPago;
+                            var lineasExistentes = db.TB_VentaLinea.Where(l => l.NumeroFactura == encabezado.NumeroFactura).ToList();
+                            foreach (var lineaExistente in lineasExistentes)
+                            {
+                                db.TB_VentaLinea.Remove(lineaExistente);
+                            }
+                            db.SaveChanges();
+
+                            var encabezadoDB = db.TB_VentaEncabezado.FirstOrDefault(e => e.NumeroFactura == encabezado.NumeroFactura);
+                            if (encabezadoDB != null)
+                            {
+                                encabezadoDB.Fecha = encabezado.Fecha;
+                                encabezadoDB.Subtotal = encabezado.Subtotal;
+                                encabezadoDB.Total = encabezado.Total;
+                                encabezadoDB.NumeroIdentificacion = encabezado.NumeroIdentificacion;
+                                encabezadoDB.IdFormaPago = encabezado.IdFormaPago;
+
+                                db.SaveChanges();
+                            }
+
+
+                            int numeroFactura = encabezadoDB.NumeroFactura;
+                            int numeroLinea = 1;
+
+
+                            foreach (var linea in lineas)
+                            {
+                                TB_VentaLinea lineaDB = new TB_VentaLinea()
+                                {
+                                    CodigoCancion = linea.CodigoCancion,
+                                    Cantidad = linea.Cantidad,
+                                    Precio = linea.Precio,
+                                    IdImpuesto = linea.IdImpuesto,
+                                    Subtotal = linea.SubTotal,
+                                    Total = linea.Total,
+                                    Linea = numeroLinea,
+                                    NumeroFactura = numeroFactura
+                                };
+
+                                db.TB_VentaLinea.Add(lineaDB);
+
+                                numeroLinea++;
+                            }
 
                             db.SaveChanges();
                         }
-                       
-                        
-                        int numeroFactura = encabezadoDB.NumeroFactura;
-                        int numeroLinea = 1;
 
-                       
-                        foreach (var linea in lineas)
-                        {
-                            TB_VentaLinea lineaDB = new TB_VentaLinea()
-                            {
-                                CodigoCancion = linea.CodigoCancion,
-                                Cantidad = linea.Cantidad,
-                                Precio = linea.Precio,
-                                IdImpuesto = linea.IdImpuesto,
-                                Subtotal = linea.SubTotal,
-                                Total = linea.Total,
-                                Linea = numeroLinea,
-                                NumeroFactura = numeroFactura
-                            };
-
-                            db.TB_VentaLinea.Add(lineaDB);
-
-                            numeroLinea++;
-                        }
-                       
-                        db.SaveChanges();
                     }
 
+                    return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
                 }
-
-                return Json(new RespuestaModel { Codigo = HttpStatusCode.OK, Mensaje = Mensajes.Exito, Resultado = true });
             }
             catch (Exception ex)
             {
                 return Json(new RespuestaModel { Codigo = HttpStatusCode.InternalServerError, Mensaje = Mensajes.Error, Resultado = false });
-            }           
+            }
         }
 
         public Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>> DevolverEntidadaFactura(int? id, List<UsuarioViewModel> usuarios)
@@ -292,7 +303,7 @@ namespace VentaMusical.Controllers
                     {
                         NumeroFactura = f.NumeroFactura,
                         Fecha = f.Fecha,
-                        NumeroIdentificacion = f.NumeroIdentificacion,                        
+                        NumeroIdentificacion = f.NumeroIdentificacion,
                         IdFormaPago = f.IdFormaPago,
                         Subtotal = f.Subtotal,
                         Total = f.Total,
@@ -324,6 +335,24 @@ namespace VentaMusical.Controllers
 
                 return new Tuple<VentaEncabezadoViewModel, List<VentaLineaViewModel>>(encabezado, lineas);
             }
+        }
+
+        private string ValidarFactura(VentaEncabezadoViewModel encabezado, List<VentaLineaViewModel> lineas)
+        {
+
+            StringBuilder errores = new StringBuilder();
+
+            if (Convert.ToInt32(encabezado.NumeroIdentificacion) <= 0)
+                errores.AppendLine("Por favor ingrese un usuario para la venta");
+
+            if (encabezado.IdFormaPago <= 0)
+                errores.AppendLine("Por favor seleccione una forma de pago");
+
+            if (lineas is null || lineas.Count() <= 0)
+                errores.AppendLine("Por favor ingrese lineas en la venta");
+
+            return errores.ToString();
+
         }
     }
 }
