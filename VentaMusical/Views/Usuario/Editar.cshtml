@@ -1,0 +1,54 @@
+﻿@model List<VentaMusical.Models.ViewModels.UsuarioModels.ListarUsuario>
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Actualizar registro de usuario</h2>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Registro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" enctype="multipart/form-data">
+                    <input type="hidden" id="NumeroIdentificacion" name="NumeroIdentificacion" value="0">
+                    <div class="mb-3">
+                        <label for="NumeroIdentificacion" class="form-label">Numero de identificación</label>
+                        <input type="text" class="form-control" id="NumeroIdentificacion" name="NumeroIdentificacion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Correo" class="form-label">Correo electrónico</label>
+                        <input type="text" class="form-control" id="Correo" name="Correo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="IdTarjeta" class="form-label">Id de la tarjeta</label>
+                        <input type="text" class="form-control" id="IdTarjeta" name="IdTarjeta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="NumeroTarjeta" class="form-label">Número de Tarjeta</label>
+                        <input type="text" class="form-control" id="NumeroTarjeta" name="NumeroTarjeta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Contrasena" class="form-label">Contraseña</label>
+                        <input type="text" class="form-control" id="Contrasena" name="Contrasena" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="IdPerfil" class="form-label">Id del perfil de usuario</label>
+                        <input type="text" class="form-control" id="IdPerfil" name="IdPerfil" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="guardar">Actualizar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

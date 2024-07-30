@@ -132,6 +132,7 @@
     <Compile Include="Controllers\CancionesController.cs" />
     <Compile Include="Controllers\GenerosMusicalesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VentaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -192,6 +193,10 @@
     <Compile Include="Models\ViewModels\GenerosMusicalesViewModel.cs" />
     <Compile Include="Models\ViewModels\ImpuestosViewModel.cs" />
     <Compile Include="Models\ViewModels\RespuestaModel.cs" />
+    <Compile Include="Models\ViewModels\UsuarioModels\CrearUsuario.cs" />
+    <Compile Include="Models\ViewModels\UsuarioModels\EditUsuario.cs" />
+    <Compile Include="Models\ViewModels\UsuarioModels\InactiUsuario.cs" />
+    <Compile Include="Models\ViewModels\UsuarioModels\ListarUsuario.cs" />
     <Compile Include="Models\ViewModels\UsuarioViewModel.cs" />
     <Compile Include="Models\ViewModels\VentaEncabezadoViewModel.cs" />
     <Compile Include="Models\ViewModels\VentaLineaViewModel.cs" />
@@ -277,6 +282,8 @@
     <Content Include="Views\Canciones\Index.cshtml" />
     <Content Include="Views\Venta\Index.cshtml" />
     <Content Include="Views\Venta\Factura.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
